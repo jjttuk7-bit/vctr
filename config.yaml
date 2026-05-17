@@ -19,7 +19,7 @@ llm:
   primary: "gpt-4o"
   fallback: "claude-3-5-sonnet-20241022"
   prompt_version: "v1.0"
-  max_articles_per_category: 6
+  max_articles_per_category: 8
   min_body_length: 200
 
 # ─────────────────────────────────────────────────────────────────
@@ -40,7 +40,7 @@ categories:
     enabled:            true
     style:              "Benchmark-driven, feature comparison, use-case focused"
     reference:          "The Verge"
-    producthunt_topics: ["artificial-intelligence", "writing-tools"]
+    producthunt_topics: ["writing-tools", "artificial-intelligence", "saas"]
 
   - key:                "AI Image"
     label:              "AI Image"
@@ -48,7 +48,7 @@ categories:
     enabled:            true
     style:              "Visual-first, prompt quality, model comparison"
     reference:          "Ars Technica"
-    producthunt_topics: ["artificial-intelligence", "design-tools"]
+    producthunt_topics: ["design-tools", "artificial-intelligence", "tech"]
 
   - key:                "Productivity"
     label:              "Productivity"
@@ -56,7 +56,7 @@ categories:
     enabled:            true
     style:              "Workflow-focused, team vs solo, integration-aware"
     reference:          "Notion blog"
-    producthunt_topics: ["productivity", "task-management"]
+    producthunt_topics: ["productivity", "saas", "tech"]
 
   - key:                "Dev Tools"
     label:              "Dev Tools"
@@ -64,7 +64,7 @@ categories:
     enabled:            true
     style:              "Code-first, latency/accuracy benchmarks, IDE integration"
     reference:          "Stack Overflow blog"
-    producthunt_topics: ["developer-tools", "github"]
+    producthunt_topics: ["developer-tools", "github", "saas"]
 
   - key:                "No-Code"
     label:              "No-Code"
@@ -72,7 +72,7 @@ categories:
     enabled:            true
     style:              "Builder-friendly, complexity vs flexibility, template quality"
     reference:          "Makerpad"
-    producthunt_topics: ["no-code", "website-builder"]
+    producthunt_topics: ["no-code", "website-builder", "saas"]
 
   - key:                "Marketing"
     label:              "Marketing"
@@ -80,7 +80,7 @@ categories:
     enabled:            true
     style:              "ROI-focused, channel-specific, case-study driven"
     reference:          "HubSpot blog"
-    producthunt_topics: ["marketing", "social-media-tools"]
+    producthunt_topics: ["marketing", "seo", "social-media", "email", "analytics"]
 
 # ─────────────────────────────────────────────────────────────────
 # 카테고리 컬러 시스템

@@ -87,6 +87,8 @@ class Collector:
     def __init__(self, config: dict | None = None) -> None:
         self._cfg         = config or _load_config()
         self._semaphore   = asyncio.Semaphore(self._cfg["pipeline"]["concurrency"])
+        # PH allows ~1 req/sec on free tier; keep concurrency at 1 to avoid 429
+        self._ph_semaphore = asyncio.Semaphore(1)
         self._ph_token    = os.getenv("PRODUCTHUNT_API_KEY", "")
         self._window      = timedelta(hours=self._cfg["pipeline"]["fetch_window_hours"])
         self._max_per_cat = self._cfg["llm"]["max_articles_per_category"]
@@ -104,8 +106,8 @@ class Collector:
                     if not cat_cfg["enabled"]:
                         continue
                     cat = cat_cfg["key"]
-                    # max 2 topics per category to avoid over-collection
-                    for topic in cat_cfg.get("producthunt_topics", [])[:2]:
+                    # max 3 topics per category
+                    for topic in cat_cfg.get("producthunt_topics", [])[:3]:
                         tasks.append(self._fetch_producthunt(client, topic, cat))
 
             if self._cfg["sources"]["github_trending"]["enabled"]:
@@ -129,7 +131,8 @@ class Collector:
             "variables": {"topic": topic, "first": 10},
         }
 
-        async with self._semaphore:
+        async with self._ph_semaphore:
+            await asyncio.sleep(0.8)   # 1 req/sec safety margin
             try:
                 r = await client.post(
                     self._cfg["sources"]["producthunt"]["api_base"],

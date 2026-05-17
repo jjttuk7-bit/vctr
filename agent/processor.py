@@ -164,7 +164,7 @@ class Processor:
                 )
             return r.choices[0].message.content
         except Exception as exc:
-            logger.warning("GPT-4o 실패 [%s]: %s — Claude로 재시도", category, exc)
+            logger.warning("GPT-4o failed [%s]: %s — retrying with Claude", category, exc)
 
         # 2차: Claude
         try:
@@ -177,7 +177,7 @@ class Processor:
                 )
             return r.content[0].text
         except Exception as exc:
-            logger.error("Claude 실패 [%s]: %s — 기사 스킵", category, exc)
+            logger.error("Claude failed [%s]: %s — skipping item", category, exc)
 
         return None
 
