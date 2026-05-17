@@ -18,8 +18,18 @@ from __future__ import annotations
 import argparse
 import asyncio
 import logging
+
 import sys
 import time
+
+from dotenv import load_dotenv
+load_dotenv()   # loads .env from repo root
+
+# Force UTF-8 output on Windows (avoids cp949 UnicodeEncodeError)
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
 from datetime import date
 from pathlib import Path
 
@@ -110,7 +120,7 @@ async def run_pipeline(dry_run: bool = False) -> None:
 
     if dry_run:
         _log_dry_run_summary(pairs)
-        logger.info("dry-run 모드 — DB 저장·알림 건너뜀")
+        logger.info("dry-run mode — skipping DB save and notifications")
         _log_elapsed(t0)
         return
 
@@ -120,12 +130,12 @@ async def run_pipeline(dry_run: bool = False) -> None:
     publish_result = publisher.publish_all(pairs)
     publisher.git_commit_and_push(today)
     logger.info(
-        "[5/6] 게시 완료: 저장=%d 스킵=%d  (%.1fs)",
+        "[5/6] Published: saved=%d skipped=%d  (%.1fs)",
         publish_result.saved, publish_result.skipped, time.monotonic() - t,
     )
 
     if not publish_result.article_ids:
-        logger.info("저장된 기사 없음 — 알림 건너뜀")
+        logger.info("Nothing saved — skipping notifications")
         _log_elapsed(t0)
         return
 
@@ -139,7 +149,7 @@ async def run_pipeline(dry_run: bool = False) -> None:
         run_date=today,
     )
     logger.info(
-        "[6/6] 알림 완료: email=%s discord=%s  (%.1fs)",
+        "[6/6] Notified: email=%s discord=%s  (%.1fs)",
         notify_result.email, notify_result.discord, time.monotonic() - t,
     )
 
@@ -177,7 +187,7 @@ def _log_dry_run_summary(
             img_src,
         )
     if len(pairs) > 5:
-        logger.info("  ... 외 %d건", len(pairs) - 5)
+        logger.info("  ... and %d more", len(pairs) - 5)
 
 
 def _log_elapsed(t0: float) -> None:

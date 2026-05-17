@@ -123,7 +123,7 @@ class Processor:
             elif r is not None:
                 processed.append(r)
 
-        logger.info("LLM 처리 완료: %d / %d건", len(processed), len(facts_list))
+        logger.info("LLM done: %d / %d items", len(processed), len(facts_list))
         return processed
 
     # ── 단건 처리 ─────────────────────────────────────────────
@@ -140,7 +140,7 @@ class Processor:
 
         data = safe_parse_json(raw)
         if data is None:
-            logger.warning("JSON 파싱 실패 [%s]: %s", facts.category, facts.title_ko)
+            logger.warning("JSON parse failed [%s]: %s", facts.category, facts.title_ko)
             return None
 
         return self._to_processed_article(facts, data)
@@ -261,7 +261,7 @@ def _load_prompt(name: str) -> str:
     if not path.exists():
         path = _PROMPTS_DIR / "archive" / f"{name}.txt"
     if not path.exists():
-        raise FileNotFoundError(f"프롬프트 파일 없음: {name}.txt (경로: {_PROMPTS_DIR})")
+        raise FileNotFoundError(f"Prompt file not found: {name}.txt (path: {_PROMPTS_DIR})")
     return path.read_text(encoding="utf-8").strip()
 
 
