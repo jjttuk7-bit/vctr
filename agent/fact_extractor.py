@@ -129,11 +129,10 @@ def _extract_where(text: str) -> str:
 
 
 def _build_context(summary: str) -> str:
-    """Return everything after the first sentence."""
-    sentences = re.split(r'(?<=[.!?])\s+', summary.strip())
-    if len(sentences) <= 1:
-        return ""
-    return " ".join(sentences[1:]).strip()[:400]
+    """Return the full enriched description (README + comments included)."""
+    # summary_ko may now contain README and HN comments after enrichment
+    # Return most of it so the LLM has rich material
+    return summary.strip()[:2000]
 
 
 def _all_matches(pattern: re.Pattern, text: str) -> list[str]:

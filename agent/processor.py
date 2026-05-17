@@ -171,7 +171,7 @@ class Processor:
             async with self._semaphore:
                 r = await self._ant.messages.create(
                     model=self._fallback,
-                    max_tokens=1500,
+                    max_tokens=2500,
                     system=system,
                     messages=[{"role": "user", "content": user}],
                 )
@@ -236,14 +236,19 @@ class Processor:
 def _build_user_message(facts: ArticleFacts) -> str:
     return json.dumps(
         {
-            "category": facts.category,
+            "tool_name": facts.title_ko,
+            "category":  facts.category,
+            "source":    facts.source_name,
             "key_facts": {
-                "who":     facts.who,
-                "what":    facts.what,
-                "when":    facts.when,
-                "where":   facts.where,
-                "numbers": facts.numbers,
-                "context": facts.context,
+                "makers":      facts.who,
+                "capability":  facts.what,
+                "launched":    facts.when,
+                "deployment":  facts.where,
+                "pricing":     facts.pricing_type or "unknown",
+                "votes":       facts.votes_count,
+                "rating":      facts.rating,
+                "numbers":     facts.numbers,
+                "description": facts.context,
             },
         },
         ensure_ascii=False,
