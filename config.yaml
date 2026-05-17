@@ -142,81 +142,121 @@ brand_colors:
 # ─────────────────────────────────────────────────────────────────
 category_keywords:
   "AI Writing":
+    # 툴명 (PH/GitHub)
     - "jasper"
     - "copy.ai"
     - "notion ai"
     - "chatgpt"
-    - "claude"
-    - "grammarly"
     - "writesonic"
+    - "grammarly"
+    # 일반 단어 (HN Show HN 타이틀 대응)
+    - "llm"
+    - "gpt"
+    - "language model"
     - "ai writer"
+    - "ai writing"
+    - "text generation"
     - "copywriting"
     - "content generation"
-    - "llm writing"
+    - "prompt"
+    - "tokens"
 
   "AI Image":
+    # 툴명
     - "midjourney"
     - "dall-e"
     - "stable diffusion"
     - "runway"
     - "adobe firefly"
     - "leonardo ai"
+    # 일반 단어
     - "image generation"
+    - "image model"
     - "text to image"
     - "generative art"
-    - "diffusion model"
+    - "diffusion"
+    - "generate image"
+    - "visual ai"
 
   "Productivity":
+    # 툴명
     - "notion"
     - "linear"
-    - "cron"
     - "obsidian"
     - "todoist"
-    - "monday"
     - "asana"
     - "clickup"
+    # 일반 단어
     - "project management"
     - "task manager"
-    - "calendar app"
+    - "todo"
+    - "note-taking"
+    - "knowledge base"
+    - "second brain"
+    - "calendar"
+    - "workflow"
 
   "Dev Tools":
+    # 툴명
     - "github copilot"
     - "cursor"
     - "tabnine"
     - "codeium"
     - "sourcegraph"
-    - "vercel"
-    - "railway"
     - "supabase"
+    # 일반 단어 (HN에서 자주 등장)
     - "developer tools"
     - "code assistant"
-    - "ide extension"
+    - "cli"
+    - "terminal"
+    - "debugging"
+    - "open source"
+    - "api"
+    - "sdk"
+    - "agent"
+    - "mcp"
+    - "benchmark"
+    - "local llm"
+    - "self-hosted"
 
   "No-Code":
+    # 툴명
     - "webflow"
     - "bubble"
     - "framer"
-    - "glide"
-    - "softr"
     - "zapier"
-    - "make"
     - "n8n"
+    - "make"
+    # 일반 단어
     - "no-code"
+    - "nocode"
     - "low-code"
     - "website builder"
+    - "visual builder"
+    - "drag and drop"
+    - "workflow automation"
+    - "saas builder"
+    - "embed"
 
   "Marketing":
+    # 툴명
     - "buffer"
-    - "taplio"
     - "beehiiv"
     - "convertkit"
     - "mailchimp"
     - "ahrefs"
     - "semrush"
     - "hootsuite"
+    # 일반 단어
+    - "email"
+    - "newsletter"
     - "social media"
+    - "seo"
+    - "analytics"
+    - "campaign"
+    - "growth"
     - "email marketing"
-    - "seo tool"
+    - "marketing automation"
 
 # ─────────────────────────────────────────────────────────────────
 # Unsplash 기본 이미지 키워드 (영어)
@@ -268,6 +308,13 @@ sources:
     enabled:     true
     display:     "GitHub Trending"
     url:         "https://github.com/trending"
+
+  hackernews:
+    enabled:          true
+    display:          "Hacker News"
+    search_base:      "https://hn.algolia.com/api/v1/search"
+    min_score:        20      # 최소 포인트 — 너무 낮으면 저품질 포스트 유입
+    fetch_window_hours: 72    # PH·GitHub(24h)보다 길게 — Show HN 빈도가 낮음
 
 # ─────────────────────────────────────────────────────────────────
 # 알림 채널

@@ -1,6 +1,6 @@
 """
 agent/collector.py — Vctr tool data collector
-ProductHunt GraphQL API + GitHub Trending → category-mapped tool data
+Sources: ProductHunt GraphQL API + Hacker News (Show HN) + GitHub Trending
 
 Rules:
   - Store tool tagline/description snippet only (no full page text)
@@ -13,6 +13,7 @@ import asyncio
 import logging
 import os
 import re
+import time
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
@@ -112,6 +113,9 @@ class Collector:
 
             if self._cfg["sources"]["github_trending"]["enabled"]:
                 tasks.append(self._fetch_github_trending(client))
+
+            if self._cfg["sources"].get("hackernews", {}).get("enabled"):
+                tasks.append(self._fetch_hackernews(client))
 
             batches = await asyncio.gather(*tasks, return_exceptions=True)
 
@@ -229,6 +233,79 @@ class Collector:
                 category=category,
                 thumbnail_url=f"https://opengraph.github.com/repo/{repo}",
             ))
+        return results
+
+    # ── Hacker News (Algolia Search API) ─────────────────────
+
+    async def _fetch_hackernews(
+        self, client: httpx.AsyncClient
+    ) -> list[CollectedArticle]:
+        """Fetch recent Show HN posts via Algolia HN Search API (free, no auth)."""
+        hn_cfg    = self._cfg["sources"]["hackernews"]
+        min_score = hn_cfg.get("min_score", 20)
+        window_h  = hn_cfg.get("fetch_window_hours", 72)
+        since     = int(time.time()) - window_h * 3600
+
+        params = {
+            "tags":           "show_hn",
+            "numericFilters": f"created_at_i>{since},points>={min_score}",
+            "hitsPerPage":    80,
+        }
+
+        async with self._semaphore:
+            try:
+                r = await client.get(hn_cfg["search_base"], params=params)
+                r.raise_for_status()
+            except httpx.HTTPError as exc:
+                logger.warning("Hacker News fetch failed: %s", exc)
+                return []
+
+        hits = r.json().get("hits", [])
+        results = []
+        for hit in hits:
+            raw_title = hit.get("title", "")
+            # Strip "Show HN: " prefix to get the clean tool name/description
+            title = re.sub(r"^[Ss]how HN:\s*", "", raw_title).strip()
+            if not title:
+                continue
+
+            url = hit.get("url", "")
+            if not url:
+                # Text-only post — link to the HN thread itself
+                url = f"https://news.ycombinator.com/item?id={hit.get('objectID', '')}"
+
+            # story_text is HTML — strip tags for summary
+            summary = _strip_html(hit.get("story_text") or "")[:400]
+
+            category = self._assign_category(title + " " + summary)
+            if category is None:
+                continue
+
+            pub_dt = datetime.fromtimestamp(
+                int(hit.get("created_at_i") or 0), tz=timezone.utc
+            )
+            votes = int(hit.get("points") or 0)
+
+            # If the tool URL points to a GitHub repo, use its OG preview
+            thumbnail_url = ""
+            gh_match = re.match(
+                r"https?://github\.com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)", url
+            )
+            if gh_match:
+                thumbnail_url = f"https://opengraph.github.com/repo/{gh_match.group(1)}"
+
+            results.append(CollectedArticle(
+                source_url=url,
+                source_name="hackernews",
+                title_ko=title,
+                summary_ko=summary,
+                published_at_ko=pub_dt,
+                category=category,
+                votes_count=votes,
+                thumbnail_url=thumbnail_url,
+            ))
+
+        logger.info("Hacker News: %d Show HN posts matched categories", len(results))
         return results
 
     # ── Category assignment ───────────────────────────────────
