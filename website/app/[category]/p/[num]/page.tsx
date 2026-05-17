@@ -1,5 +1,6 @@
-// 카테고리 N페이지 — SSG 서버 컴포넌트 (/k-beauty/p/2/ 형태)
+// Vctr — 카테고리 N페이지 (/dev-tools/p/2/)
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ArticleCard from '@/components/ArticleCard'
 import CategoryPagination from '@/components/CategoryPagination'
@@ -24,8 +25,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = slugToCat(params.category)
   return {
-    title:       `${cat} — Page ${params.num}`,
-    description: `${cat} news page ${params.num} — ${SITE_NAME}`,
+    title:       `${cat} 리뷰 — ${params.num}페이지`,
+    description: `${cat} 툴 리뷰 ${params.num}페이지 — ${SITE_NAME}`,
   }
 }
 
@@ -34,27 +35,57 @@ export default function CategoryPageN({ params }: Props) {
   const page = Number(params.num)
   if (!cat || !page || page < 2) notFound()
 
-  const { bg }                        = getCatColor(cat)
-  const { articles, total, totalPages } = getArticlesByCategory(cat, page)
-  if (page > totalPages)              notFound()
+  const { bg, text }                      = getCatColor(cat)
+  const { articles, total, totalPages }   = getArticlesByCategory(cat, page)
+  if (page > totalPages)                  notFound()
 
   return (
     <div className="space-y-8">
-      <div className="rounded-card px-8 py-6 text-white" style={{ background: bg }}>
-        <p className="text-white/60 text-xs uppercase tracking-widest mb-1">Category</p>
-        <h1 className="text-3xl font-bold">{cat}</h1>
-        <p className="text-white/70 text-sm mt-1">
-          {total} stories · Page {page} of {totalPages}
-        </p>
-      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* ── 카테고리 헤더 (슬림 버전) ───────────────────── */}
+      <header
+        className="relative rounded-2xl px-8 py-6 overflow-hidden"
+        style={{ background: bg }}
+      >
+        <div className="absolute -top-6 -right-6 w-32 h-32 rounded-full opacity-20"
+             style={{ background: 'rgba(255,255,255,0.5)' }} />
+
+        <div className="relative flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <Link
+              href={`/${catToSlug(cat)}`}
+              className="text-[10px] font-bold uppercase tracking-[0.15em] hover:opacity-80 transition-opacity"
+              style={{ color: `${text}99` }}
+            >
+              ← {cat}
+            </Link>
+            <h1 className="text-2xl font-bold text-white mt-1 leading-tight">
+              {cat}
+            </h1>
+          </div>
+
+          <span
+            className="flex-shrink-0 px-4 py-2 rounded-xl text-sm font-semibold"
+            style={{ background: 'rgba(255,255,255,0.15)', color: text }}
+          >
+            {total}개 중 {page}페이지
+          </span>
+        </div>
+      </header>
+
+      {/* ── 3열 그리드 (2페이지~) ───────────────────────── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {articles.map(a => (
-          <ArticleCard key={a.id} article={a} />
+          <ArticleCard key={a.id} article={a} layout="grid" />
         ))}
       </div>
 
-      <CategoryPagination slug={params.category} current={page} total={totalPages} accent={bg} />
+      <CategoryPagination
+        slug={params.category}
+        current={page}
+        total={totalPages}
+        accent={bg}
+      />
     </div>
   )
 }
