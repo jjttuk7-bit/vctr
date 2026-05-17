@@ -1,16 +1,15 @@
-# KNow — config.yaml
+# Vctr — config.yaml
 # ⚠️  SSOT: 카테고리·키워드·컬러·이미지 키워드 모두 여기서만 정의한다.
 #    코드·프롬프트에 하드코딩 금지. 변경 시 이 파일만 수정한다.
-#    참조: KWAVE_DAILY_PLAN.md 2절 / 3.3절 / 4.4절 · BRANDING.md 3절 / 4절
 
 # ─────────────────────────────────────────────────────────────────
 # 사이트 메타
 # ─────────────────────────────────────────────────────────────────
 site:
-  name: "KNow"
-  slogan: "KNow Korea, before anyone else."
-  description: "Your daily dose of K-beauty, K-drama, K-pop, K-food, K-fashion and more."
-  url: "https://k-now.co"          # 도메인 확보 시 업데이트
+  name: "Vctr"
+  slogan: "Find your vector."
+  description: "Precision AI & SaaS tool reviews for global builders."
+  url: "https://vctr.io"
   locale: "en"
 
 # ─────────────────────────────────────────────────────────────────
@@ -20,321 +19,255 @@ llm:
   primary: "gpt-4o"
   fallback: "claude-3-5-sonnet-20241022"
   prompt_version: "v1.0"
-  max_articles_per_category: 8     # 카테고리당 일 최대 기사 수 (과잉 수집 방지)
-  min_body_length: 200             # 품질 필터: 최소 200자 이상
+  max_articles_per_category: 6
+  min_body_length: 200
 
 # ─────────────────────────────────────────────────────────────────
 # 파이프라인 설정
 # ─────────────────────────────────────────────────────────────────
 pipeline:
-  fetch_window_hours: 24           # 최신성 필터: 24시간 이내 기사만
-  concurrency: 5                   # asyncio Semaphore 병렬 요청 수
+  fetch_window_hours: 24
+  concurrency: 5
 
 # ─────────────────────────────────────────────────────────────────
-# 카테고리 정의 (9개 — 단계별 활성화)
-# enabled: false → 코드에서 수집·처리 건너뜀
+# 카테고리 정의 (MVP 6개)
+# producthunt_topics: ProductHunt GraphQL topic slug 목록
 # ─────────────────────────────────────────────────────────────────
 categories:
-  - key:       "K-Beauty"
-    label:     "K-Beauty"
-    phase:     "mvp"
-    enabled:   true
-    style:     "How-to, ingredient explainer, skincare routine guide"
-    reference: "Allure"
+  - key:                "AI Writing"
+    label:              "AI Writing"
+    phase:              "mvp"
+    enabled:            true
+    style:              "Benchmark-driven, feature comparison, use-case focused"
+    reference:          "The Verge"
+    producthunt_topics: ["artificial-intelligence", "writing-tools"]
 
-  - key:       "K-Drama"
-    label:     "K-Drama"
-    phase:     "mvp"
-    enabled:   true
-    style:     "Storytelling, review, streaming guide"
-    reference: "Entertainment Weekly"
+  - key:                "AI Image"
+    label:              "AI Image"
+    phase:              "mvp"
+    enabled:            true
+    style:              "Visual-first, prompt quality, model comparison"
+    reference:          "Ars Technica"
+    producthunt_topics: ["artificial-intelligence", "design-tools"]
 
-  - key:       "K-Pop"
-    label:     "K-Pop"
-    phase:     "mvp"
-    enabled:   true
-    style:     "Breaking news, fan-forward, numbers-first"
-    reference: "Billboard"
+  - key:                "Productivity"
+    label:              "Productivity"
+    phase:              "mvp"
+    enabled:            true
+    style:              "Workflow-focused, team vs solo, integration-aware"
+    reference:          "Notion blog"
+    producthunt_topics: ["productivity", "task-management"]
 
-  - key:       "K-Food"
-    label:     "K-Food"
-    phase:     "mvp"
-    enabled:   true
-    style:     "Food intro, rich cultural context"
-    reference: "Bon Appétit"
+  - key:                "Dev Tools"
+    label:              "Dev Tools"
+    phase:              "mvp"
+    enabled:            true
+    style:              "Code-first, latency/accuracy benchmarks, IDE integration"
+    reference:          "Stack Overflow blog"
+    producthunt_topics: ["developer-tools", "github"]
 
-  - key:       "K-Fashion"
-    label:     "K-Fashion"
-    phase:     "mvp"
-    enabled:   true
-    style:     "Cool and polished, styling tips"
-    reference: "Vogue / Hypebeast"
+  - key:                "No-Code"
+    label:              "No-Code"
+    phase:              "mvp"
+    enabled:            true
+    style:              "Builder-friendly, complexity vs flexibility, template quality"
+    reference:          "Makerpad"
+    producthunt_topics: ["no-code", "website-builder"]
 
-  - key:       "K-Lifestyle"
-    label:     "K-Lifestyle"
-    phase:     "mvp"
-    enabled:   true
-    style:     "Slow and emotive, life tips"
-    reference: "Well+Good"
-
-  - key:       "K-Travel"
-    label:     "K-Travel"
-    phase:     "v1.1"
-    enabled:   false
-    style:     "Travel guide, K-drama pilgrimage, local food map"
-    reference: "Lonely Planet"
-
-  - key:       "K-Sport"
-    label:     "K-Sport"
-    phase:     "v1.1"
-    enabled:   false
-    style:     "Match report, player profile, breaking"
-    reference: "ESPN"
-
-  - key:       "K-Entertainment"
-    label:     "K-Entertainment"
-    phase:     "v1.1"
-    enabled:   false
-    style:     "Variety show, film, OTT review"
-    reference: "Variety"
+  - key:                "Marketing"
+    label:              "Marketing"
+    phase:              "mvp"
+    enabled:            true
+    style:              "ROI-focused, channel-specific, case-study driven"
+    reference:          "HubSpot blog"
+    producthunt_topics: ["marketing", "social-media-tools"]
 
 # ─────────────────────────────────────────────────────────────────
 # 카테고리 컬러 시스템
-# 출처: BRANDING.md 4절 — 임의 수정 금지
 # OG 이미지(@vercel/og), UI 배지, 카테고리 필터 배경색에 사용
 # ─────────────────────────────────────────────────────────────────
 category_colors:
-  K-Beauty:
-    bg:         "#D4537E"
+  "AI Writing":
+    bg:         "#6366F1"
     text:       "#ffffff"
-    badge_bg:   "#FBEAF0"
-    badge_text: "#993556"
+    badge_bg:   "#EEF2FF"
+    badge_text: "#4338CA"
 
-  K-Drama:
-    bg:         "#7F77DD"
+  "AI Image":
+    bg:         "#EC4899"
     text:       "#ffffff"
-    badge_bg:   "#EEEDFE"
-    badge_text: "#534AB7"
+    badge_bg:   "#FDF2F8"
+    badge_text: "#BE185D"
 
-  K-Pop:
-    bg:         "#D85A30"
+  "Productivity":
+    bg:         "#10B981"
     text:       "#ffffff"
-    badge_bg:   "#FAECE7"
-    badge_text: "#993C1D"
+    badge_bg:   "#ECFDF5"
+    badge_text: "#065F46"
 
-  K-Food:
-    bg:         "#BA7517"
+  "Dev Tools":
+    bg:         "#F59E0B"
     text:       "#ffffff"
-    badge_bg:   "#FAEEDA"
-    badge_text: "#854F0B"
+    badge_bg:   "#FFFBEB"
+    badge_text: "#92400E"
 
-  K-Fashion:
-    bg:         "#444441"
+  "No-Code":
+    bg:         "#3B82F6"
     text:       "#ffffff"
-    badge_bg:   "#F1EFE8"
-    badge_text: "#5F5E5A"
+    badge_bg:   "#EFF6FF"
+    badge_text: "#1D4ED8"
 
-  K-Lifestyle:
-    bg:         "#1D9E75"
+  "Marketing":
+    bg:         "#EF4444"
     text:       "#ffffff"
-    badge_bg:   "#E1F5EE"
-    badge_text: "#0F6E56"
-
-  K-Travel:
-    bg:         "#378ADD"
-    text:       "#ffffff"
-    badge_bg:   "#E6F1FB"
-    badge_text: "#185FA5"
-
-  K-Sport:
-    bg:         "#639922"
-    text:       "#ffffff"
-    badge_bg:   "#EAF3DE"
-    badge_text: "#3B6D11"
-
-  K-Entertainment:
-    bg:         "#E24B4A"
-    text:       "#ffffff"
-    badge_bg:   "#FCEBEB"
-    badge_text: "#A32D2D"
+    badge_bg:   "#FEF2F2"
+    badge_text: "#991B1B"
 
 # ─────────────────────────────────────────────────────────────────
 # 브랜드 코어 컬러
-# 출처: BRANDING.md 3절 — CSS 변수·Tailwind 설정과 동기화 유지
+# CSS 변수·Tailwind 설정과 동기화 유지
 # ─────────────────────────────────────────────────────────────────
 brand_colors:
-  korean_red:        "#C0392B"
-  korean_red_light:  "#E8534A"
-  korean_red_dark:   "#922B21"
-  deep_navy:         "#1A1A2E"
-  deep_navy_light:   "#2C2C4A"
-  off_white:         "#FAF9F6"
-  gold:              "#E8B86D"
-  gold_light:        "#F5D49A"
+  indigo:       "#6366F1"
+  indigo_light: "#818CF8"
+  indigo_dark:  "#4338CA"
+  near_black:   "#0A0A0F"
+  near_black_2: "#1C1C28"
+  surface:      "#F8FAFC"
+  cyan:         "#22D3EE"
 
 # ─────────────────────────────────────────────────────────────────
-# 카테고리 분류 키워드 (한국어)
-# 출처: KWAVE_DAILY_PLAN.md 3.3절
-# Naver Search API / Daum RSS 기사 수집 시 카테고리 매핑에 사용
+# 카테고리 키워드 (영어)
+# ProductHunt 데이터 카테고리 매핑 + GitHub Trending 분류에 사용
 # ─────────────────────────────────────────────────────────────────
 category_keywords:
-  K-Beauty:
-    - "스킨케어"
-    - "뷰티"
-    - "화장품"
-    - "메이크업"
-    - "올리브영"
-    - "아모레"
-    - "LG생활건강"
-    - "성분"
-    - "세럼"
+  "AI Writing":
+    - "jasper"
+    - "copy.ai"
+    - "notion ai"
+    - "chatgpt"
+    - "claude"
+    - "grammarly"
+    - "writesonic"
+    - "ai writer"
+    - "copywriting"
+    - "content generation"
+    - "llm writing"
 
-  K-Drama:
-    - "드라마"
-    - "넷플릭스"
-    - "tvN"
-    - "JTBC"
-    - "MBC"
-    - "시청률"
-    - "배우"
-    - "출연"
-    - "시즌"
+  "AI Image":
+    - "midjourney"
+    - "dall-e"
+    - "stable diffusion"
+    - "runway"
+    - "adobe firefly"
+    - "leonardo ai"
+    - "image generation"
+    - "text to image"
+    - "generative art"
+    - "diffusion model"
 
-  K-Pop:
-    - "아이돌"
-    - "컴백"
-    - "음원"
-    - "콘서트"
-    - "BTS"
-    - "블랙핑크"
-    - "뮤직비디오"
-    - "차트"
-    - "앨범"
+  "Productivity":
+    - "notion"
+    - "linear"
+    - "cron"
+    - "obsidian"
+    - "todoist"
+    - "monday"
+    - "asana"
+    - "clickup"
+    - "project management"
+    - "task manager"
+    - "calendar app"
 
-  K-Food:
-    - "음식"
-    - "레시피"
-    - "맛집"
-    - "한식"
-    - "트렌드 음식"
-    - "요리"
-    - "식당"
-    - "먹방"
+  "Dev Tools":
+    - "github copilot"
+    - "cursor"
+    - "tabnine"
+    - "codeium"
+    - "sourcegraph"
+    - "vercel"
+    - "railway"
+    - "supabase"
+    - "developer tools"
+    - "code assistant"
+    - "ide extension"
 
-  K-Fashion:
-    - "패션"
-    - "스트릿"
-    - "스타일"
-    - "의류"
-    - "브랜드"
-    - "룩북"
-    - "트렌드"
+  "No-Code":
+    - "webflow"
+    - "bubble"
+    - "framer"
+    - "glide"
+    - "softr"
+    - "zapier"
+    - "make"
+    - "n8n"
+    - "no-code"
+    - "low-code"
+    - "website builder"
 
-  K-Lifestyle:
-    - "라이프스타일"
-    - "인테리어"
-    - "웰니스"
-    - "명상"
-    - "일상"
-    - "취미"
-
-  K-Travel:
-    - "여행"
-    - "관광"
-    - "서울 여행"
-    - "제주"
-    - "경복궁"
-    - "성지순례"
-    - "투어"
-
-  K-Sport:
-    - "손흥민"
-    - "류현진"
-    - "김민재"
-    - "스포츠"
-    - "축구"
-    - "야구"
-    - "올림픽"
-    - "선수"
-
-  K-Entertainment:
-    - "예능"
-    - "영화"
-    - "OTT"
-    - "웨이브"
-    - "티빙"
-    - "개봉"
-    - "시상식"
-    - "연예인"
+  "Marketing":
+    - "buffer"
+    - "taplio"
+    - "beehiiv"
+    - "convertkit"
+    - "mailchimp"
+    - "ahrefs"
+    - "semrush"
+    - "hootsuite"
+    - "social media"
+    - "email marketing"
+    - "seo tool"
 
 # ─────────────────────────────────────────────────────────────────
 # Unsplash 기본 이미지 키워드 (영어)
-# 출처: KWAVE_DAILY_PLAN.md 4.4절
-# LLM 생성 unsplash_keywords가 없을 때 fallback으로 사용
-# ⚠️  인물명 절대 포함 금지 — 분위기·장소·사물 키워드만 (초상권·저작권 안전)
+# LLM 생성 unsplash_keywords가 없을 때 fallback
+# ⚠️  제품 로고·브랜드명 절대 포함 금지 — 분위기·장소·추상 키워드만
 # ─────────────────────────────────────────────────────────────────
 image_keywords:
-  K-Beauty:
-    - "korean skincare"
-    - "beauty cosmetics"
-    - "glass skin routine"
+  "AI Writing":
+    - "writing workspace laptop"
+    - "minimal desk setup"
+    - "text editor dark screen"
 
-  K-Drama:
-    - "seoul night cityscape"
-    - "korean street aesthetic"
-    - "cinema screen"
+  "AI Image":
+    - "digital art abstract colors"
+    - "creative studio lights"
+    - "generative design pattern"
 
-  K-Pop:
-    - "concert stage lights"
-    - "music performance crowd"
-    - "neon stage"
+  "Productivity":
+    - "minimal workspace overhead"
+    - "planning notebook flat lay"
+    - "clean desk morning light"
 
-  K-Food:
-    - "korean street food"
-    - "bibimbap bowl"
-    - "seoul food market"
+  "Dev Tools":
+    - "code editor dark terminal"
+    - "developer laptop setup"
+    - "server room blue light"
 
-  K-Fashion:
-    - "street style fashion"
-    - "seoul style"
-    - "minimal fashion"
+  "No-Code":
+    - "drag drop builder interface"
+    - "startup office whiteboard"
+    - "prototype wireframe design"
 
-  K-Lifestyle:
-    - "korean minimalist interior"
-    - "seoul cafe"
-    - "wellness spa"
-
-  K-Travel:
-    - "seoul skyline"
-    - "gyeongbokgung palace"
-    - "korea travel"
-
-  K-Sport:
-    - "football stadium aerial"
-    - "soccer match action"
-    - "sport crowd"
-
-  K-Entertainment:
-    - "film clapperboard"
-    - "television studio"
-    - "award ceremony stage"
+  "Marketing":
+    - "analytics dashboard monitor"
+    - "social media content studio"
+    - "marketing meeting strategy"
 
 # ─────────────────────────────────────────────────────────────────
 # 수집 소스
 # ─────────────────────────────────────────────────────────────────
 sources:
-  naver:
+  producthunt:
     enabled:     true
-    display:     "Naver News"
-    api_base:    "https://openapi.naver.com/v1/search/news.json"
-    daily_limit: 25000
+    display:     "ProductHunt"
+    api_base:    "https://api.producthunt.com/v2/api/graphql"
+    daily_limit: 200
 
-  daum:
-    enabled: true
-    display: "Daum News"
-    rss_feeds:
-      - url:           "https://news.daum.net/rss/entertain"
-        category_hint: "K-Drama"
+  github_trending:
+    enabled:     true
+    display:     "GitHub Trending"
+    url:         "https://github.com/trending"
 
 # ─────────────────────────────────────────────────────────────────
 # 알림 채널
@@ -346,4 +279,4 @@ notifications:
   discord:
     enabled:  true
   twitter:
-    enabled:  false          # v1.1에서 활성화
+    enabled:  false

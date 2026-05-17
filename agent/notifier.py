@@ -25,22 +25,19 @@ from database.models import Article
 
 logger = logging.getLogger(__name__)
 
-# 브랜드 컬러 (BRANDING.md 3절)
-_KOREAN_RED = "#C0392B"
+# Brand color (BRANDING.md)
+_VCTR_INDIGO = "#6366F1"
 
-# 카테고리 컬러 → Discord embed color (hex int)
+# Category colors → Discord embed color (hex int)
 _CAT_COLORS_INT: dict[str, int] = {
-    "K-Beauty":        0xD4537E,
-    "K-Drama":         0x7F77DD,
-    "K-Pop":           0xD85A30,
-    "K-Food":          0xBA7517,
-    "K-Fashion":       0x444441,
-    "K-Lifestyle":     0x1D9E75,
-    "K-Travel":        0x378ADD,
-    "K-Sport":         0x639922,
-    "K-Entertainment": 0xE24B4A,
+    "AI Writing":   0x6366F1,
+    "AI Image":     0xEC4899,
+    "Productivity": 0x10B981,
+    "Dev Tools":    0xF59E0B,
+    "No-Code":      0x3B82F6,
+    "Marketing":    0xEF4444,
 }
-_DEFAULT_COLOR_INT = 0xC0392B  # Korean Red fallback
+_DEFAULT_COLOR_INT = 0x6366F1  # Vctr indigo fallback
 
 
 # ─────────────────────────────────────────────────────────────
@@ -106,8 +103,8 @@ class Notifier:
             return False
 
         date_str  = today.strftime("%B %-d")   # "May 17"
-        highlight = featured.headline_en if featured else "Today's K-culture news"
-        subject   = f"KNow Daily — {date_str} | {shorten(highlight, 50, placeholder='…')}"
+        highlight = featured.headline_en if featured else "Today's AI tool reviews"
+        subject   = f"Vctr Weekly — {date_str} | {shorten(highlight, 50, placeholder='…')}"
         body_html = _build_email_html(articles, featured, today, self._site_url)
 
         try:
@@ -164,12 +161,12 @@ def _build_email_html(
         # ── 헤더 ──────────────────────────────────────────────
         f"""
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-                    max-width:600px;margin:0 auto;background:#FAF9F6;">
-          <div style="background:{_KOREAN_RED};padding:24px 32px;text-align:center;">
-            <span style="color:#fff;font-size:28px;font-weight:700;">K</span>
-            <span style="color:rgba(255,255,255,.85);font-size:28px;font-weight:300;">Now</span>
+                    max-width:600px;margin:0 auto;background:#F8FAFC;">
+          <div style="background:{_VCTR_INDIGO};padding:24px 32px;text-align:center;">
+            <span style="color:#fff;font-size:28px;font-weight:900;">V</span>
+            <span style="color:rgba(255,255,255,.85);font-size:28px;font-weight:200;">ctr</span>
             <p style="color:rgba(255,255,255,.8);margin:8px 0 0;font-size:13px;letter-spacing:.04em;">
-              KNow Daily — {date_str}
+              Vctr Weekly — {date_str}
             </p>
           </div>
         """,
@@ -239,8 +236,8 @@ def _build_email_html(
     parts.append(f"""
       <div style="background:#1A1A2E;padding:24px 32px;text-align:center;">
         <p style="color:rgba(255,255,255,.6);font-size:12px;margin:0;">
-          <a href="{site_url}" style="color:rgba(255,255,255,.6);">k-now.co</a>
-          · You're receiving this because you subscribed to KNow Daily.
+          <a href="{site_url}" style="color:rgba(255,255,255,.6);">vctr.io</a>
+          · You're receiving this because you subscribed to Vctr Weekly.
         </p>
       </div>
     </div>
@@ -264,8 +261,8 @@ def _build_discord_payload(
 
     # 요약 embed
     embeds.append({
-        "title":       f"📰 KNow Daily — {date_str}",
-        "description": f"{len(articles)}개 기사가 발행됐습니다.",
+        "title":       f"📰 Vctr Weekly — {date_str}",
+        "description": f"{len(articles)} tool reviews published.",
         "color":       _DEFAULT_COLOR_INT,
         "url":         site_url,
     })
@@ -306,19 +303,16 @@ def _find_featured(
 
 
 def _cat_hex(category: str) -> str:
-    """카테고리명 → 배경 hex 색상 (config 컬러 시스템)."""
+    """Category name → background hex color (config color system)."""
     colors: dict[str, str] = {
-        "K-Beauty":        "#D4537E",
-        "K-Drama":         "#7F77DD",
-        "K-Pop":           "#D85A30",
-        "K-Food":          "#BA7517",
-        "K-Fashion":       "#444441",
-        "K-Lifestyle":     "#1D9E75",
-        "K-Travel":        "#378ADD",
-        "K-Sport":         "#639922",
-        "K-Entertainment": "#E24B4A",
+        "AI Writing":   "#6366F1",
+        "AI Image":     "#EC4899",
+        "Productivity": "#10B981",
+        "Dev Tools":    "#F59E0B",
+        "No-Code":      "#3B82F6",
+        "Marketing":    "#EF4444",
     }
-    return colors.get(category, _KOREAN_RED)
+    return colors.get(category, _VCTR_INDIGO)
 
 
 def _load_config() -> dict:

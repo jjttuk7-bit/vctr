@@ -6,8 +6,8 @@ import path from 'path'
 
 // Vercel: Root Directory = website → process.cwd() = website/
 // GitHub Actions / local: npm run build from website/ → 동일
-const DB_PATH = process.env.DB_PATH ?? path.join(process.cwd(), 'data', 'know.db')
-console.log('[KNow/db] DB_PATH =', DB_PATH)
+const DB_PATH = process.env.DB_PATH ?? path.join(process.cwd(), 'data', 'vctr.db')
+console.log('[Vctr/db] DB_PATH =', DB_PATH)
 
 export interface ArticleRow {
   id:               number

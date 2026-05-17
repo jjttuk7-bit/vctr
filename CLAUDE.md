@@ -1,184 +1,170 @@
-# CLAUDE.md — KNow
+# CLAUDE.md — Vctr
 
 <!--
-  Claude Code는 이 파일을 세션 시작 시 자동으로 읽는다.
-  ⚡ 브리핑 → 📍 현재 상태 → 📐 규칙 순으로 읽고 작업 시작.
+  Claude Code reads this file automatically at session start.
+  Read: Briefing → Current state → Rules
 -->
 
 ---
 
-## ⚡ 브리핑 — 항상 여기서 시작 (필독)
+## ⚡ Briefing — start here
 
-| 항목 | 내용 |
+| Item | Content |
 |---|---|
-| **프로젝트** | KNow — K-culture 글로벌 영문 뉴스 자동화 미디어 |
-| **한 줄 목표** | 한국 뉴스에서 K-culture 팩트 수집 → LLM 영문 재작성 → 글로벌 웹사이트 자동 게시 |
-| **Python 스택** | Python 3.11 / httpx(async) / feedparser / SQLAlchemy 2.0 / openai + anthropic |
-| **Web 스택** | Next.js 14 App Router / TypeScript / Tailwind CSS / @vercel/og / better-sqlite3 |
-| **DB** | SQLite (`data/know.db`) — Git 커밋으로 지속성 유지 (MVP 전략) |
-| **배포** | GitHub Actions (cron KST 08:00) → GitHub Pages |
-| **알림** | Buttondown(이메일) / X(Tweepy) / Discord Webhook |
+| **Project** | Vctr — AI/SaaS tool review global English media |
+| **Goal** | Collect tool data (ProductHunt + GitHub Trending) → LLM review writing → auto-publish |
+| **Python stack** | Python 3.11 / httpx(async) / SQLAlchemy 2.0 / openai + anthropic |
+| **Web stack** | Next.js 14 App Router / TypeScript / Tailwind CSS / @vercel/og / better-sqlite3 |
+| **DB** | SQLite (`website/data/vctr.db`) — Git-committed for persistence (MVP strategy) |
+| **Deploy** | GitHub Actions (cron UTC 01:00) → push DB → Vercel auto-redeploy |
+| **Notifications** | Buttondown (email) / Discord Webhook |
 
-### 파이프라인 3단계
+### Pipeline
 
 ```
-[Collector]   Naver Search API + Daum RSS → 팩트 추출 (원문 문장 버림)
+[Collector]   ProductHunt GraphQL API + GitHub Trending → tool data
       ↓
-[Processor]   카테고리별 프롬프트 → LLM 1회 → 영문 기사 재작성 + unsplash_keywords
+[FactExtractor]  tool name + description → structured facts (no LLM)
       ↓
-[Publisher]   Unsplash 이미지 + OG 자동생성 → DB → Next.js 빌드 → 배포 → 알림
+[Processor]   category prompt → LLM 1 call → English review + unsplash_keywords
+      ↓
+[Publisher]   Unsplash image + OG fallback → DB → Next.js build → deploy → notify
 ```
 
-### 카테고리 9개 (단계별 오픈)
+### Categories (MVP 6)
 
 ```
-MVP 6개    K-Beauty · K-Drama · K-Pop · K-Food · K-Fashion · K-Lifestyle
-v1.1 3개   K-Travel · K-Sport · K-Entertainment
+AI Writing   AI Image   Productivity   Dev Tools   No-Code   Marketing
 ```
 
-### 이미지 전략 (비용 $0)
+### Image strategy ($0 cost)
 
 ```
-기사 본문   → Unsplash API (분위기 이미지, 인물 제외)
-SNS / OG   → @vercel/og 자동생성 (카테고리 컬러 + 제목)
-K-Pop/Drama → YouTube 공식 썸네일 (API, 공식 채널 한정)
-❌ 금지     기사 이미지 · 아이돌 사진 · AI 생성 이미지
+Review images  → Unsplash API (mood/workspace images, no product logos)
+Social / OG    → @vercel/og auto-generated (category color + headline)
+❌ Banned       product screenshots · brand logos · AI-generated images
 ```
 
-### 카테고리 컬러 시스템
+### Category color system
 
 ```
-K-Beauty  #D4537E  K-Drama  #7F77DD  K-Pop    #D85A30
-K-Food    #BA7517  K-Fashion #444441  K-Lifestyle #1D9E75
-K-Travel  #378ADD  K-Sport  #639922  K-Entertainment #E24B4A
+AI Writing  #6366F1   AI Image  #EC4899   Productivity  #10B981
+Dev Tools   #F59E0B   No-Code   #3B82F6   Marketing     #EF4444
 ```
 
-### 핵심 설계 결정 (상세 → DECISIONS.md)
+### Key design decisions
 
-| 결정 | 이유 |
+| Decision | Reason |
 |---|---|
-| 번역 ❌ 팩트 재작성 ✅ | 번역은 2차 저작물 → 저작권 위반 |
-| AI 이미지 ❌ Unsplash ✅ | 월 $60 절감, 분위기 이미지가 오히려 감각적 |
-| 카테고리별 프롬프트 분리 | 독자가 다르면 톤·구조가 달라야 함 |
-| DB Git 커밋 허용 | GitHub Actions 클린 환경 → 누적 데이터 유지 |
-| config.yaml SSOT | 카테고리 키워드·컬러·이미지키워드 단일 관리 |
+| Facts only → no copy-paste | Avoids copyright issues |
+| AI images banned | Unsplash = $0, better trust |
+| Category-specific prompts | Different readers need different tones |
+| DB in Git | GitHub Actions clean env → data persists across runs |
+| config.yaml SSOT | Single source for categories/colors/keywords |
 
 ---
 
-## 📍 현재 상태 — SESSION.md를 먼저 읽어라
+## 📍 Current state — check SESSION.md first
 
-> **세션 시작 시 SESSION.md 확인 필수. 없으면 새로 만든다.**
+> **Always read SESSION.md at session start. Create one if missing.**
 
-**세션 시작 주문 패턴**:
+**Session start pattern**:
 ```
-SESSION.md 읽고, [모듈명] 작업 이어서 시작해줘.
-참조: KWAVE_DAILY_PLAN.md [N절]
+Read SESSION.md and continue [module] work.
 ```
 
 ---
 
-## 📐 개발 규칙 — 코드 작성 전 반드시 확인
+## 📐 Development rules — check before writing code
 
-1. **기사 처리** → 팩트만 추출, 원문 문장 저장 금지. LLM 입력에 원문 전문 넘기지 않음
-2. **이미지** → Unsplash API + @vercel/og만. 기사 이미지·아이돌 사진 절대 사용 금지
-3. **Unsplash 출처** → 모든 이미지 하단 "Photo by [이름] on Unsplash" 표기 필수 (정책)
-4. **카테고리 수정** → `config.yaml`만. 코드·프롬프트 하드코딩 금지
-5. **프롬프트 수정** → `PROMPTS.md`에 버전·이유 먼저 기록 후 변경
-6. **LLM 호출** → `process_with_fallback()` 경유 (GPT-4o → Claude → 영문 fallback)
-7. **JSON 파싱** → `safe_parse_json()` 경유. 직접 `json.loads()` 금지
-8. **시크릿** → `os.getenv()` 사용. 코드·로그 하드코딩 절대 금지
-9. **출처 표기** → 모든 기사 하단 "Source: [원문 URL]" 필수
+1. **Tool data** → extract facts only, no raw description copy-paste. LLM never sees raw summary text directly
+2. **Images** → Unsplash API + @vercel/og only. Product logos / brand screenshots banned
+3. **Unsplash credit** → all images need "Photo by [name] on Unsplash" attribution (policy)
+4. **Category changes** → `config.yaml` only. No hardcoding in code or prompts
+5. **Prompt changes** → document version and reason in PROMPTS.md first
+6. **LLM calls** → via `process_with_fallback()` only (GPT-4o → Claude fallback)
+7. **JSON parsing** → via `safe_parse_json()` only. Direct `json.loads()` banned
+8. **Secrets** → `os.getenv()` only. Never hardcode or log
+9. **Source attribution** → all articles show "Source: [ProductHunt URL]"
 
 ---
 
-## 📚 참조 인덱스 — 필요한 섹션만 열 것
+## 📚 Reference index
 
-| 궁금한 것 | 파일 | 섹션 |
+| Question | File | Section |
 |---|---|---|
-| 서비스 전체 전략 | `KWAVE_DAILY_PLAN.md` | 1~3절 |
-| 카테고리 정의·컬러 | `KWAVE_DAILY_PLAN.md` | 2절 |
-| 수집 소스·필터링 | `KWAVE_DAILY_PLAN.md` | 3절 |
-| LLM 처리 흐름·코드 | `KWAVE_DAILY_PLAN.md` | 4절 |
-| Unsplash 연동 코드 | `KWAVE_DAILY_PLAN.md` | 4.4절 |
-| OG 이미지 코드 | `KWAVE_DAILY_PLAN.md` | 4.4절 |
-| DB 스키마·모델 | `KWAVE_DAILY_PLAN.md` | 7절 |
-| SNS 자동 발행 | `KWAVE_DAILY_PLAN.md` | 8절 |
-| SEO 전략·키워드 | `KWAVE_DAILY_PLAN.md` | 9절 |
-| 수익화 전략 | `KWAVE_DAILY_PLAN.md` | 10절 |
-| 카테고리별 프롬프트 전문 | `PROMPTS.md` | 카테고리별 섹션 |
-| 프롬프트 롤백 | `PROMPTS.md` | 롤백 절차 |
-| 설계 결정 이유 | `DECISIONS.md` | 전체 |
-| 장애 대응 | `OPERATIONS.md` | 3절 (론칭 후 생성) |
-| 로고·컬러·슬로건 | `BRANDING.md` | 전체 |
-| OG 이미지 코드 | `BRANDING.md` | 7절 |
-| 카테고리 컬러 hex | `BRANDING.md` | 4절 |
-| Tailwind 컬러 설정 | `BRANDING.md` | 4절 |
-| 뉴스레터 구조 | `BRANDING.md` | 10절 |
+| Service strategy | `KWAVE_DAILY_PLAN.md` | (legacy — create VCTR_PLAN.md) |
+| Category definitions + colors | `config.yaml` | categories / category_colors |
+| Data collection flow | `agent/collector.py` | — |
+| LLM processing | `agent/processor.py` | — |
+| Unsplash image fetching | `agent/image_fetcher.py` | — |
+| DB schema + models | `database/schema.sql` + `models.py` | — |
+| Prompt versions | `PROMPTS.md` | — |
+| Logo / colors / slogan | `BRANDING.md` | all sections |
+| OG image code | `website/app/api/og/route.tsx` | — |
+| Tailwind color config | `website/tailwind.config.js` | — |
 
 ---
 
-## 디렉토리 구조
+## Directory structure
 
 ```
-know/
+vctr/
 ├── agent/
-│   ├── main.py              # 진입점
-│   ├── collector.py         # Naver API + Daum RSS 수집
-│   ├── fact_extractor.py    # 원문 → 팩트 추출
-│   ├── processor.py         # LLM 재작성 (카테고리별 프롬프트)
-│   ├── image_fetcher.py     # Unsplash API + YouTube 썸네일
-│   ├── publisher.py         # DB 저장 + 배포 트리거
-│   ├── notifier.py          # 이메일 / X / Discord
+│   ├── main.py              # pipeline entry point
+│   ├── collector.py         # ProductHunt + GitHub Trending
+│   ├── fact_extractor.py    # tool data → structured facts
+│   ├── processor.py         # LLM review writing (category prompts)
+│   ├── image_fetcher.py     # Unsplash API
+│   ├── publisher.py         # DB save + deploy trigger
+│   ├── notifier.py          # email / Discord
 │   └── prompts/
-│       ├── v1_base.txt          # 공통 시스템 프롬프트
-│       ├── v1_kbeauty.txt       # K-Beauty 변형
-│       ├── v1_kdrama.txt        # K-Drama 변형
-│       ├── v1_kpop.txt          # K-Pop 변형
-│       ├── v1_kfood.txt         # K-Food 변형
-│       ├── v1_kfashion.txt      # K-Fashion 변형
-│       ├── v1_klifestyle.txt    # K-Lifestyle 변형
-│       └── archive/             # 이전 버전 보관
+│       ├── v1_base.txt
+│       ├── v1_aiwriting.txt
+│       ├── v1_aiimage.txt
+│       ├── v1_productivity.txt
+│       ├── v1_devtools.txt
+│       ├── v1_nocode.txt
+│       ├── v1_marketing.txt
+│       └── archive/
 │
 ├── database/
 │   ├── schema.sql
-│   └── models.py            # JsonType TypeDecorator 포함
-│
-├── data/
-│   └── know.db             # SQLite (Git 추적 대상)
+│   └── models.py
 │
 ├── website/                 # Next.js 14
 │   ├── app/
-│   │   ├── page.tsx             # 메인 (오늘의 K-culture)
-│   │   ├── [category]/
-│   │   │   └── page.tsx         # 카테고리 페이지
-│   │   ├── articles/
-│   │   │   └── [id]/page.tsx    # 기사 상세
-│   │   └── api/
-│   │       ├── og/route.tsx     # @vercel/og 자동생성
-│   │       └── feed.xml/route.ts
+│   │   ├── page.tsx             # homepage
+│   │   ├── [category]/page.tsx  # category listing
+│   │   ├── articles/[id]/page.tsx
+│   │   └── api/og/route.tsx     # @vercel/og
+│   ├── components/
+│   │   ├── Logo.tsx
+│   │   ├── Header.tsx
+│   │   ├── ArticleCard.tsx
+│   │   ├── CategoryBadge.tsx
+│   │   └── SearchBar.tsx
+│   ├── data/vctr.db             # SQLite (Git-tracked)
 │   └── lib/
+│       ├── config.ts
 │       └── db.ts
 │
-├── .github/workflows/
-│   └── daily-kwave.yml
-│
-├── config.yaml              # 카테고리·키워드·컬러 SSOT
-├── CLAUDE.md                # 이 파일
-├── KWAVE_DAILY_PLAN.md      # 마스터 기획서
-├── PROMPTS.md               # 프롬프트 버전 관리
-├── SESSION.md               # 작업 상태 추적
-├── DECISIONS.md             # 설계 결정 이유
-└── OPERATIONS.md            # 운영 매뉴얼 (론칭 후)
+├── .github/workflows/daily-vctr.yml
+├── config.yaml              # SSOT: categories · keywords · colors
+├── CLAUDE.md                # this file
+├── BRANDING.md              # brand identity
+├── PROMPTS.md               # prompt version history
+└── SESSION.md               # current work state
 ```
 
 ---
 
-## 성능·비용 목표
+## Performance & cost targets
 
-| 지표 | 목표 |
+| Metric | Target |
 |---|---|
-| 파이프라인 실행 (MVP 6카테고리) | < 120초/일 |
-| LLM 비용 | < $0.20/일 (월 ~$6) |
-| 이미지 비용 | $0 (Unsplash + OG 자동생성) |
-| 인프라 총비용 | $0 (LLM 제외) |
-| JSON 파싱 성공률 | > 99% |
+| Pipeline runtime (6 categories MVP) | < 120s/day |
+| LLM cost | < $0.20/day (~$6/month) |
+| Image cost | $0 (Unsplash + OG auto-gen) |
+| Total infra cost | $0 (excl. LLM) |
+| JSON parse success rate | > 99% |

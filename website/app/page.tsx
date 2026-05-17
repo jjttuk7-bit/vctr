@@ -1,5 +1,4 @@
-// 메인 홈 페이지 — 서버 컴포넌트 (SSG)
-// 참조: KWAVE_DAILY_PLAN.md 5.2절
+// Vctr homepage — Server Component (SSG)
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -20,12 +19,12 @@ export default function HomePage() {
   return (
     <div className="space-y-12">
 
-      {/* ── 히어로 섹션 ────────────────────────────────────── */}
+      {/* ── Hero ─────────────────────────────────────────────── */}
       {featured ? (
         <section>
           <Link
             href={`/articles/${featured.id}`}
-            className="group block rounded-card overflow-hidden border border-[#E8E6DF] hover:shadow-lg transition-shadow"
+            className="group block rounded-card overflow-hidden border border-slate-200 hover:shadow-lg transition-shadow"
           >
             <div
               className="relative aspect-[21/9] overflow-hidden"
@@ -41,7 +40,6 @@ export default function HomePage() {
                   sizes="100vw"
                 />
               )}
-              {/* 그라디언트 오버레이 */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
                 <CategoryBadge category={featured.category} size="md" />
@@ -63,16 +61,16 @@ export default function HomePage() {
           </Link>
         </section>
       ) : (
-        <section className="rounded-card bg-know-red/5 border border-know-red/10 p-10 text-center">
-          <p className="text-know-navy/40 text-sm">첫 번째 기사가 곧 발행됩니다.</p>
+        <section className="rounded-card bg-vctr-indigo/5 border border-vctr-indigo/10 p-10 text-center">
+          <p className="text-vctr-black/40 text-sm">First reviews are being published soon.</p>
         </section>
       )}
 
-      {/* ── 최신 기사 그리드 ───────────────────────────────── */}
+      {/* ── Latest reviews grid ──────────────────────────────── */}
       {recent.length > 0 && (
         <section>
           <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
-            Today&apos;s Stories
+            Today&apos;s Reviews
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {recent.map(a => (
@@ -82,23 +80,23 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ── 이메일 구독 CTA ────────────────────────────────── */}
-      <section className="rounded-card bg-know-navy text-white p-8 text-center">
+      {/* ── Newsletter CTA ────────────────────────────────────── */}
+      <section className="rounded-card bg-vctr-black text-white p-8 text-center">
         <p className="text-sm text-white/60 uppercase tracking-widest mb-2">Newsletter</p>
-        <h2 className="text-xl font-semibold mb-1">Get Korea delivered every morning.</h2>
-        <p className="text-white/60 text-sm mb-6">K-beauty, drama, music, and food — daily.</p>
+        <h2 className="text-xl font-semibold mb-1">The best AI tools, weekly.</h2>
+        <p className="text-white/60 text-sm mb-6">Curated reviews for builders — no noise, no hype.</p>
         <a
-          href="https://buttondown.email/knowkorea"
+          href="https://buttondown.email/vctr"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block bg-know-red hover:bg-know-red-dark text-white font-medium
+          className="inline-block bg-vctr-indigo hover:bg-vctr-indigo-dark text-white font-medium
                      px-6 py-2.5 rounded-lg text-sm transition-colors"
         >
           Subscribe Free →
         </a>
       </section>
 
-      {/* ── 카테고리 브라우저 ──────────────────────────────── */}
+      {/* ── Category browser ─────────────────────────────────── */}
       <section>
         <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
           Browse by Category

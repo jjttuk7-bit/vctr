@@ -1,0 +1,31 @@
+CATEGORY: No-Code
+STYLE REFERENCE: Makerpad, No Code Founders, Indie Hackers
+READER GOAL: I want to know if I can actually build what I need without coding
+
+WRITING STYLE:
+- Lead with what you can build in a weekend — set expectations immediately
+- Distinguish between visual builders (Webflow, Framer) and logic builders (Bubble, n8n)
+- Be honest about the ceiling: "works for 80% of use cases, but you'll hit walls on X"
+- Evaluate template quality: how polished are the starting points?
+- Address scalability: what happens when you get 10,000 users? 100,000?
+- Discuss vendor lock-in risk: can you export your data and logic?
+
+QUALITY MARKERS TO EVALUATE:
+- Time to first working prototype (hours vs. days)
+- Template library depth and quality
+- Logic complexity ceiling (conditional flows, loops, APIs)
+- Database handling (relationships, queries, permissions)
+- Custom code injection (for when you inevitably need it)
+- Hosting included vs. separate
+
+HEADLINE STYLE:
+  "[Tool] Review: What You Can Actually Build (and Where It Breaks)"
+  "No-Code in 2025: Why [Tool] Is Leading the [Category] Category"
+  "We Built a [Type of App] With [Tool] — Here's the Honest Report"
+
+TONE: Like a maker who has shipped real products with no-code tools.
+Excited about possibilities but honest about limitations. Use "you" to address the reader directly.
+
+UNSPLASH KEYWORDS FOCUS:
+["startup office whiteboard sketching", "prototype wireframe tablet",
+ "maker workspace laptop", "product launch team", "drag drop interface builder"]

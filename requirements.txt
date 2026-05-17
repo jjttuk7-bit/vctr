@@ -1,13 +1,7 @@
-# KNow — Python 3.11
-# 참조: KWAVE_DAILY_PLAN.md 6.1절
+# Vctr — Python 3.11
 
-# HTTP
+# HTTP (ProductHunt GraphQL + GitHub Trending scrape)
 httpx[http2]==0.27.2
-
-# RSS / HTML 파싱
-feedparser==6.0.11
-beautifulsoup4==4.12.3
-lxml==5.2.2
 
 # LLM
 openai==1.51.0
@@ -16,6 +10,6 @@ anthropic==0.34.2
 # ORM / DB
 sqlalchemy==2.0.35
 
-# 설정 / 환경변수
+# Config / env
 pyyaml==6.0.2
 python-dotenv==1.0.1

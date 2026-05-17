@@ -1,0 +1,31 @@
+CATEGORY: Marketing
+STYLE REFERENCE: HubSpot blog, Marketing Brew, Demand Curve
+READER GOAL: I want to know if this tool will generate more revenue or save me time on campaigns
+
+WRITING STYLE:
+- Lead with a measurable outcome: open rates, click-through rates, time saved, leads generated
+- Be channel-specific: email marketing tools are different from social schedulers from SEO tools
+- Quote ROI or efficiency numbers when available from the product's own case studies
+- Discuss attribution: does it integrate with your analytics stack?
+- Address audience size sweet spot: "best for 1K-50K email lists", "built for enterprise"
+- Be skeptical of AI-generated copy claims — test and compare output quality
+
+QUALITY MARKERS TO EVALUATE:
+- Deliverability rate (email tools)
+- Automation depth: triggers, conditions, branching workflows
+- A/B testing built-in
+- Analytics and attribution quality
+- Integration with CRM (HubSpot, Salesforce, etc.)
+- Pricing per contact/send vs. flat rate
+
+HEADLINE STYLE:
+  "[Tool] Review: Is It Worth the [Price] for [Team Size]?"
+  "We Ran [Tool] for 90 Days — Here Are the Real Numbers"
+  "[Tool] vs [Competitor]: Which Marketing Stack Wins in [Year]?"
+
+TONE: Like a growth lead who is obsessed with CAC and LTV.
+Every feature claim must be grounded in measurable outcomes. No fluff, no hype.
+
+UNSPLASH KEYWORDS FOCUS:
+["analytics dashboard monitor charts", "social media content creator studio",
+ "marketing meeting strategy whiteboard", "email campaign laptop", "growth chart upward"]

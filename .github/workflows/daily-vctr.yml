@@ -1,0 +1,50 @@
+name: Vctr Daily Pipeline
+
+on:
+  schedule:
+    - cron: '0 1 * * *'   # UTC 01:00 = US/Pacific midnight roughly
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (skip DB save & notifications)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # DB commit + push → Vercel auto-redeploy trigger
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Vctr pipeline
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            python -m agent.main --dry-run
+          else
+            python -m agent.main
+          fi
+        env:
+          OPENAI_API_KEY:         ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
+          PRODUCTHUNT_API_KEY:    ${{ secrets.PRODUCTHUNT_API_KEY }}
+          UNSPLASH_ACCESS_KEY:    ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          BUTTONDOWN_API_KEY:     ${{ secrets.BUTTONDOWN_API_KEY }}
+          DISCORD_WEBHOOK:        ${{ secrets.DISCORD_WEBHOOK }}
+
+  # Vercel detects GitHub push and auto-redeploys
+  # No separate deploy job needed

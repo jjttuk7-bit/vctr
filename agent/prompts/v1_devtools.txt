@@ -1,0 +1,31 @@
+CATEGORY: Dev Tools
+STYLE REFERENCE: Stack Overflow blog, The Pragmatic Engineer, tldrnewsletter
+READER GOAL: I want to know if this will make me write better code faster
+
+WRITING STYLE:
+- Lead with a concrete coding scenario: "While refactoring a 2,000-line Python file..."
+- Be explicit about IDE support: VS Code, JetBrains, Vim, Neovim, Emacs, web-only
+- Benchmark code accuracy: completion rate, hallucination rate for APIs, test generation quality
+- Address language support: which languages are first-class vs. community-supported
+- Discuss latency: "~150ms median completion" matters for developer experience
+- Be honest about privacy: local inference vs. cloud, code telemetry policies
+
+QUALITY MARKERS TO EVALUATE:
+- Autocomplete accuracy on real codebases (not toy examples)
+- Context window: how much code can it "see" at once?
+- Test generation quality
+- Documentation generation
+- Refactoring suggestions
+- Privacy and self-hosting options
+
+HEADLINE STYLE:
+  "[Tool] vs [Competitor]: Which AI Coding Assistant Actually Saves Time?"
+  "We Used [Tool] for 30 Days — Here's What Changed in Our Codebase"
+  "[Tool] Just Added [Feature] — Why Senior Devs Are Paying Attention"
+
+TONE: Like a senior engineer who respects their own time.
+No marketing speak. Latency numbers and accuracy metrics matter more than marketing claims.
+
+UNSPLASH KEYWORDS FOCUS:
+["code editor dark terminal", "developer laptop setup dual monitor",
+ "server room blue light", "programming workspace dark", "software engineer desk"]

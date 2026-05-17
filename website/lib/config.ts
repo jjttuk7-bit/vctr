@@ -1,11 +1,11 @@
-// 참조: BRANDING.md 3절 / 4절 / config.yaml SSOT
+// Vctr brand config — synced with config.yaml SSOT
 
-export const SITE_NAME    = 'KNow'
-export const SITE_SLOGAN  = 'KNow Korea, before anyone else.'
-export const SITE_DESC    = 'Your daily dose of K-beauty, K-drama, K-pop, K-food, K-fashion and more.'
+export const SITE_NAME    = 'Vctr'
+export const SITE_SLOGAN  = 'Find your vector.'
+export const SITE_DESC    = 'Precision AI & SaaS tool reviews for global builders.'
 
 export const MVP_CATEGORIES = [
-  'K-Beauty', 'K-Drama', 'K-Pop', 'K-Food', 'K-Fashion', 'K-Lifestyle',
+  'AI Writing', 'AI Image', 'Productivity', 'Dev Tools', 'No-Code', 'Marketing',
 ] as const
 
 export type Category = typeof MVP_CATEGORIES[number] | string
@@ -15,25 +15,22 @@ export interface CategoryColor {
 }
 
 export const CATEGORY_COLORS: Record<string, CategoryColor> = {
-  'K-Beauty':        { bg: '#D4537E', text: '#fff', badgeBg: '#FBEAF0', badgeText: '#993556' },
-  'K-Drama':         { bg: '#7F77DD', text: '#fff', badgeBg: '#EEEDFE', badgeText: '#534AB7' },
-  'K-Pop':           { bg: '#D85A30', text: '#fff', badgeBg: '#FAECE7', badgeText: '#993C1D' },
-  'K-Food':          { bg: '#BA7517', text: '#fff', badgeBg: '#FAEEDA', badgeText: '#854F0B' },
-  'K-Fashion':       { bg: '#444441', text: '#fff', badgeBg: '#F1EFE8', badgeText: '#5F5E5A' },
-  'K-Lifestyle':     { bg: '#1D9E75', text: '#fff', badgeBg: '#E1F5EE', badgeText: '#0F6E56' },
-  'K-Travel':        { bg: '#378ADD', text: '#fff', badgeBg: '#E6F1FB', badgeText: '#185FA5' },
-  'K-Sport':         { bg: '#639922', text: '#fff', badgeBg: '#EAF3DE', badgeText: '#3B6D11' },
-  'K-Entertainment': { bg: '#E24B4A', text: '#fff', badgeBg: '#FCEBEB', badgeText: '#A32D2D' },
+  'AI Writing':   { bg: '#6366F1', text: '#fff', badgeBg: '#EEF2FF', badgeText: '#4338CA' },
+  'AI Image':     { bg: '#EC4899', text: '#fff', badgeBg: '#FDF2F8', badgeText: '#BE185D' },
+  'Productivity': { bg: '#10B981', text: '#fff', badgeBg: '#ECFDF5', badgeText: '#065F46' },
+  'Dev Tools':    { bg: '#F59E0B', text: '#fff', badgeBg: '#FFFBEB', badgeText: '#92400E' },
+  'No-Code':      { bg: '#3B82F6', text: '#fff', badgeBg: '#EFF6FF', badgeText: '#1D4ED8' },
+  'Marketing':    { bg: '#EF4444', text: '#fff', badgeBg: '#FEF2F2', badgeText: '#991B1B' },
 }
 
 export function getCatColor(category: string): CategoryColor {
-  return CATEGORY_COLORS[category] ?? { bg: '#C0392B', text: '#fff', badgeBg: '#FAE5E3', badgeText: '#C0392B' }
+  return CATEGORY_COLORS[category] ?? { bg: '#6366F1', text: '#fff', badgeBg: '#EEF2FF', badgeText: '#4338CA' }
 }
 
-// "K-Beauty" ↔ "k-beauty"
-export const catToSlug = (c: string) => c.toLowerCase()
-export const slugToCat = (s: string) =>
-  MVP_CATEGORIES.find(c => c.toLowerCase() === s) ?? s
+// "AI Writing" ↔ "ai-writing"  |  "Dev Tools" ↔ "dev-tools"
+export const catToSlug  = (c: string) => c.toLowerCase().replace(/\s+/g, '-')
+export const slugToCat  = (s: string) =>
+  MVP_CATEGORIES.find(c => c.toLowerCase().replace(/\s+/g, '-') === s) ?? s
 
 export function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', {

@@ -1,0 +1,30 @@
+CATEGORY: AI Writing
+STYLE REFERENCE: The Verge, Wired, MIT Technology Review
+READER GOAL: I want to know if this will write better than what I'm using now
+
+WRITING STYLE:
+- Lead with a specific writing task the tool excels at — not its feature list
+  "If you draft cold emails, Jasper's tone-matching outperforms Copy.ai by a visible margin."
+- Compare output quality directly when possible: coherence, factual accuracy, tone flexibility
+- Explain what "AI writing" means in context: ghost-writing, first drafts, SEO copy, long-form
+- Never hype up fluency — readers know all LLMs produce fluent text; what matters is specificity
+- Cite pricing concretely: "$49/month", "free up to 2,000 words/day", "usage-based at $0.02/1K tokens"
+
+QUALITY MARKERS TO EVALUATE:
+- Context retention across paragraphs
+- Instruction-following accuracy (does it do what you ask?)
+- Hallucination rate for factual writing
+- Brand voice adaptation
+- Output speed (relevant for high-volume use cases)
+
+HEADLINE STYLE:
+  "[Tool]: The AI Writer [Target User] Actually Needs"
+  "We Tested [Tool] Against [Competitor] — Here's the Honest Result"
+  "Why [Tool] Has Quietly Become the Go-To for [Specific Use Case]"
+
+TONE: Like a senior editor who has tested every AI writer on the market.
+Sharp, direct, zero marketing fluff. Trust is built through specificity and honesty.
+
+UNSPLASH KEYWORDS FOCUS:
+["writing workspace laptop", "minimal desk setup writer", "text editor dark mode",
+ "content creation studio", "notebook pen coffee flat lay"]

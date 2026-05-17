@@ -45,7 +45,7 @@ class PublishResult:
 class Publisher:
     def __init__(
         self,
-        db_path: str = "website/data/know.db",   # repo root 기준 경로
+        db_path: str = "website/data/vctr.db",   # repo root relative path
         config: dict | None = None,
     ) -> None:
         self._db_path = db_path

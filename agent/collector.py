@@ -1,29 +1,23 @@
 """
-agent/collector.py — KNow 뉴스 수집기
-Naver Search API + Daum RSS → 카테고리별 원시 기사 수집
-참조: KWAVE_DAILY_PLAN.md 3.2절 / 3.3절
+agent/collector.py — Vctr tool data collector
+ProductHunt GraphQL API + GitHub Trending → category-mapped tool data
 
-규칙:
-  - 원문 전문 저장 금지 (API 제공 description snippet만 보존)
-  - 시크릿은 os.getenv() 경유 (CLAUDE.md 규칙 #8)
+Rules:
+  - Store tool tagline/description snippet only (no full page text)
+  - Secrets via os.getenv() only
 """
 
 from __future__ import annotations
 
 import asyncio
-import html
 import logging
 import os
 import re
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
-from email.utils import parsedate_to_datetime
 from pathlib import Path
 
-import calendar as _calendar
-
-import feedparser
 import httpx
 import yaml
 
@@ -33,8 +27,7 @@ _HTML_TAG_RE = re.compile(r"<[^>]+>")
 
 
 def _strip_html(text: str) -> str:
-    """Naver API 응답의 <b> 태그·HTML 엔티티 제거."""
-    return html.unescape(_HTML_TAG_RE.sub("", text)).strip()
+    return _HTML_TAG_RE.sub("", text).strip()
 
 
 def _load_config() -> dict:
@@ -44,16 +37,45 @@ def _load_config() -> dict:
 
 
 # ─────────────────────────────────────────────────────────────
-# 수집 결과 단위
+# Collected item type
+# Field names kept compatible with KNow DB schema
 # ─────────────────────────────────────────────────────────────
 @dataclass
 class CollectedArticle:
     source_url:      str
-    source_name:     str       # "naver" | "daum"
-    title_ko:        str
-    summary_ko:      str       # API snippet — 원문 전문 아님
+    source_name:     str        # "producthunt" | "github_trending"
+    title_ko:        str        # tool name (schema field reused)
+    summary_ko:      str        # tool tagline + description snippet
     published_at_ko: datetime
     category:        str
+    # ProductHunt extras — passed to FactExtractor
+    votes_count:     int              = 0
+    rating:          float            = 0.0
+    pricing_type:    str              = ""   # "free" | "freemium" | "paid" | "unknown"
+    maker_names:     list[str]        = field(default_factory=list)
+
+
+# ProductHunt GraphQL — top posts by topic
+_PH_QUERY = """
+query getTopPosts($topic: String!, $first: Int!) {
+  posts(topic: $topic, first: $first, order: VOTES) {
+    edges {
+      node {
+        id
+        name
+        tagline
+        description
+        url
+        votesCount
+        reviewsRating
+        createdAt
+        makers { nodes { name } }
+        pricing { planName isMonthlyPricing price }
+      }
+    }
+  }
+}
+"""
 
 
 # ─────────────────────────────────────────────────────────────
@@ -61,187 +83,196 @@ class CollectedArticle:
 # ─────────────────────────────────────────────────────────────
 class Collector:
     def __init__(self, config: dict | None = None) -> None:
-        self._cfg = config or _load_config()
-        self._semaphore = asyncio.Semaphore(self._cfg["pipeline"]["concurrency"])
+        self._cfg         = config or _load_config()
+        self._semaphore   = asyncio.Semaphore(self._cfg["pipeline"]["concurrency"])
+        self._ph_token    = os.getenv("PRODUCTHUNT_API_KEY", "")
+        self._window      = timedelta(hours=self._cfg["pipeline"]["fetch_window_hours"])
+        self._max_per_cat = self._cfg["llm"]["max_articles_per_category"]
+        self._keywords    = self._cfg["category_keywords"]
+        self._enabled     = [c["key"] for c in self._cfg["categories"] if c["enabled"]]
 
-        self._naver_id     = os.getenv("NAVER_CLIENT_ID", "")
-        self._naver_secret = os.getenv("NAVER_CLIENT_SECRET", "")
-
-        self._window        = timedelta(hours=self._cfg["pipeline"]["fetch_window_hours"])
-        self._max_per_cat   = self._cfg["llm"]["max_articles_per_category"]
-        self._keywords: dict[str, list[str]] = self._cfg["category_keywords"]
-        self._enabled: list[str] = [
-            c["key"] for c in self._cfg["categories"] if c["enabled"]
-        ]
-
-    # ── 공개 진입점 ───────────────────────────────────────────
+    # ── Entry point ───────────────────────────────────────────
 
     async def collect_all(self) -> list[CollectedArticle]:
-        """활성 카테고리 전체 수집 → 중복 제거·시간 필터·카테고리 상한 적용."""
-        async with httpx.AsyncClient(timeout=10, follow_redirects=True) as client:
+        async with httpx.AsyncClient(timeout=15, follow_redirects=True) as client:
             tasks: list = []
 
-            if self._cfg["sources"]["naver"]["enabled"]:
-                for category in self._enabled:
-                    for keyword in self._keywords.get(category, []):
-                        tasks.append(
-                            self._fetch_naver(client, keyword, category)
-                        )
+            if self._cfg["sources"]["producthunt"]["enabled"]:
+                for cat_cfg in self._cfg["categories"]:
+                    if not cat_cfg["enabled"]:
+                        continue
+                    cat = cat_cfg["key"]
+                    # max 2 topics per category to avoid over-collection
+                    for topic in cat_cfg.get("producthunt_topics", [])[:2]:
+                        tasks.append(self._fetch_producthunt(client, topic, cat))
 
-            if self._cfg["sources"]["daum"]["enabled"]:
-                for feed in self._cfg["sources"]["daum"]["rss_feeds"]:
-                    tasks.append(self._fetch_daum_rss(client, feed["url"]))
+            if self._cfg["sources"]["github_trending"]["enabled"]:
+                tasks.append(self._fetch_github_trending(client))
 
             batches = await asyncio.gather(*tasks, return_exceptions=True)
 
         return self._dedupe_and_filter(batches)
 
-    # ── Naver Search API ──────────────────────────────────────
+    # ── ProductHunt GraphQL ───────────────────────────────────
 
-    async def _fetch_naver(
-        self, client: httpx.AsyncClient, keyword: str, category: str
+    async def _fetch_producthunt(
+        self, client: httpx.AsyncClient, topic: str, category: str
     ) -> list[CollectedArticle]:
         headers = {
-            "X-Naver-Client-Id":     self._naver_id,
-            "X-Naver-Client-Secret": self._naver_secret,
+            "Authorization": f"Bearer {self._ph_token}",
+            "Content-Type":  "application/json",
         }
-        params = {"query": keyword, "display": 10, "sort": "date"}
+        payload = {
+            "query":     _PH_QUERY,
+            "variables": {"topic": topic, "first": 10},
+        }
 
         async with self._semaphore:
             try:
-                r = await client.get(
-                    self._cfg["sources"]["naver"]["api_base"],
+                r = await client.post(
+                    self._cfg["sources"]["producthunt"]["api_base"],
                     headers=headers,
-                    params=params,
+                    json=payload,
                 )
                 r.raise_for_status()
             except httpx.HTTPError as exc:
-                logger.warning("Naver API 실패 [%s / %s]: %s", category, keyword, exc)
+                logger.warning("ProductHunt API failed [%s / %s]: %s", category, topic, exc)
                 return []
 
+        edges = r.json().get("data", {}).get("posts", {}).get("edges", [])
         results = []
-        for item in r.json().get("items", []):
-            pub_dt = _parse_rfc2822(item.get("pubDate", ""))
-            if pub_dt is None:
-                continue
-            # originallink가 있으면 실제 기사 URL, 없으면 naver 캐시 URL 사용
-            url = item.get("originallink") or item.get("link", "")
+        for edge in edges:
+            node = edge.get("node", {})
+            url  = node.get("url", "")
             if not url:
                 continue
-            results.append(
-                CollectedArticle(
-                    source_url=url,
-                    source_name="naver",
-                    title_ko=_strip_html(item.get("title", "")),
-                    summary_ko=_strip_html(item.get("description", "")),
-                    published_at_ko=pub_dt,
-                    category=category,
-                )
-            )
+
+            created_raw = node.get("createdAt", "")
+            try:
+                pub_dt = datetime.fromisoformat(created_raw.replace("Z", "+00:00"))
+            except Exception:
+                pub_dt = datetime.now(tz=timezone.utc)
+
+            tagline     = node.get("tagline") or ""
+            description = node.get("description") or ""
+            summary = tagline
+            if description and description != tagline:
+                summary = f"{tagline}. {description[:300]}".strip(". ")
+
+            makers        = [m["name"] for m in node.get("makers", {}).get("nodes", [])]
+            pricing_plans = node.get("pricing") or []
+            pricing_type  = _infer_pricing(pricing_plans)
+            votes         = int(node.get("votesCount") or 0)
+            rating        = float(node.get("reviewsRating") or 0.0)
+
+            results.append(CollectedArticle(
+                source_url=url,
+                source_name="producthunt",
+                title_ko=node.get("name", ""),
+                summary_ko=summary,
+                published_at_ko=pub_dt,
+                category=category,
+                votes_count=votes,
+                rating=rating,
+                pricing_type=pricing_type,
+                maker_names=makers,
+            ))
         return results
 
-    # ── Daum RSS ──────────────────────────────────────────────
+    # ── GitHub Trending ───────────────────────────────────────
 
-    async def _fetch_daum_rss(
-        self, client: httpx.AsyncClient, feed_url: str
+    async def _fetch_github_trending(
+        self, client: httpx.AsyncClient
     ) -> list[CollectedArticle]:
+        url = self._cfg["sources"]["github_trending"]["url"]
         async with self._semaphore:
             try:
-                r = await client.get(feed_url)
+                r = await client.get(url, headers={"Accept": "text/html"})
                 r.raise_for_status()
             except httpx.HTTPError as exc:
-                logger.warning("Daum RSS 실패 [%s]: %s", feed_url, exc)
+                logger.warning("GitHub Trending failed: %s", exc)
                 return []
 
-        feed = feedparser.parse(r.text)
+        repo_re = re.compile(r'href="/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)"')
+        desc_re = re.compile(
+            r'<p[^>]*class="[^"]*col-9[^"]*"[^>]*>\s*(.*?)\s*</p>', re.DOTALL
+        )
+
+        seen: set[str] = set()
+        repos = [m.group(1) for m in repo_re.finditer(r.text)]
+        descs = [_strip_html(m.group(1)) for m in desc_re.finditer(r.text)]
+
         results = []
-        for entry in feed.entries:
-            pub_dt = _parse_struct_time(entry.get("published_parsed"))
-            if pub_dt is None:
+        for i, repo in enumerate(repos[:25]):
+            if repo in seen or repo.count("/") != 1:
                 continue
-            url = entry.get("link", "")
-            if not url:
-                continue
-            title   = _strip_html(entry.get("title", ""))
-            summary = _strip_html(entry.get("summary", ""))
-            category = self._assign_category(title, summary)
+            seen.add(repo)
+
+            desc     = descs[i] if i < len(descs) else ""
+            category = self._assign_category(repo.replace("/", " ") + " " + desc)
             if category is None:
                 continue
-            results.append(
-                CollectedArticle(
-                    source_url=url,
-                    source_name="daum",
-                    title_ko=title,
-                    summary_ko=summary,
-                    published_at_ko=pub_dt,
-                    category=category,
-                )
-            )
+
+            results.append(CollectedArticle(
+                source_url=f"https://github.com/{repo}",
+                source_name="github_trending",
+                title_ko=repo,
+                summary_ko=desc,
+                published_at_ko=datetime.now(tz=timezone.utc),
+                category=category,
+            ))
         return results
 
-    # ── 카테고리 분류 (Daum RSS용) ────────────────────────────
+    # ── Category assignment ───────────────────────────────────
 
-    def _assign_category(self, title: str, summary: str) -> str | None:
-        """키워드 히트 수가 가장 많은 활성 카테고리 반환. 0히트면 None."""
-        text = title + " " + summary
+    def _assign_category(self, text: str) -> str | None:
+        text_lower = text.lower()
         best_cat, best_count = None, 0
         for category in self._enabled:
-            count = sum(1 for kw in self._keywords.get(category, []) if kw in text)
+            count = sum(
+                1 for kw in self._keywords.get(category, [])
+                if kw.lower() in text_lower
+            )
             if count > best_count:
                 best_cat, best_count = category, count
         return best_cat if best_count > 0 else None
 
-    # ── 중복 제거·필터 ────────────────────────────────────────
+    # ── Deduplication + filter ────────────────────────────────
 
-    def _dedupe_and_filter(
-        self, batches: list
-    ) -> list[CollectedArticle]:
+    def _dedupe_and_filter(self, batches: list) -> list[CollectedArticle]:
         seen_urls:       set[str]       = set()
         category_counts: dict[str, int] = defaultdict(int)
         results:         list[CollectedArticle] = []
 
         for batch in batches:
             if isinstance(batch, BaseException):
-                logger.warning("수집 태스크 예외: %s", batch)
+                logger.warning("Collect task exception: %s", batch)
                 continue
-            for article in batch:
-                if not article.source_url:
+            for tool in batch:
+                if not tool.source_url:
                     continue
-                if article.source_url in seen_urls:
+                if tool.source_url in seen_urls:
                     continue
-                if not self._is_fresh(article.published_at_ko):
+                if category_counts[tool.category] >= self._max_per_cat:
                     continue
-                if category_counts[article.category] >= self._max_per_cat:
-                    continue
-                seen_urls.add(article.source_url)
-                category_counts[article.category] += 1
-                results.append(article)
+                seen_urls.add(tool.source_url)
+                category_counts[tool.category] += 1
+                results.append(tool)
 
-        logger.info("수집 완료: %d건 %s", len(results), dict(category_counts))
+        logger.info("Collected: %d items %s", len(results), dict(category_counts))
         return results
 
-    def _is_fresh(self, dt: datetime) -> bool:
-        now    = datetime.now(tz=timezone.utc)
-        dt_utc = dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
-        return (now - dt_utc) <= self._window
-
 
 # ─────────────────────────────────────────────────────────────
-# 날짜 파싱 유틸
+# Utility
 # ─────────────────────────────────────────────────────────────
-def _parse_rfc2822(date_str: str) -> datetime | None:
-    """Naver pubDate: "Mon, 17 May 2026 08:00:00 +0900" 형식."""
-    try:
-        return parsedate_to_datetime(date_str)
-    except Exception:
-        return None
 
-
-def _parse_struct_time(t) -> datetime | None:
-    """feedparser published_parsed: time.struct_time (UTC) → datetime."""
-    if t is None:
-        return None
-    try:
-        return datetime.fromtimestamp(_calendar.timegm(t), tz=timezone.utc)
-    except Exception:
-        return None
+def _infer_pricing(pricing_plans: list) -> str:
+    if not pricing_plans:
+        return "unknown"
+    prices = [float(p.get("price") or 0) for p in pricing_plans]
+    if all(p == 0 for p in prices):
+        return "free"
+    if any(p == 0 for p in prices):
+        return "freemium"
+    return "paid"

@@ -1,32 +1,32 @@
-/* 참조: BRANDING.md 3절 CSS 변수 */
+/* Vctr brand CSS variables — synced with BRANDING.md */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --know-red:        #C0392B;
-  --know-red-light:  #E8534A;
-  --know-red-dark:   #922B21;
-  --know-navy:       #1A1A2E;
-  --know-navy-light: #2C2C4A;
-  --know-off-white:  #FAF9F6;
-  --know-gold:       #E8B86D;
+  --vctr-indigo:       #6366F1;
+  --vctr-indigo-light: #818CF8;
+  --vctr-indigo-dark:  #4338CA;
+  --vctr-black:        #0A0A0F;
+  --vctr-black-2:      #1C1C28;
+  --vctr-surface:      #F8FAFC;
+  --vctr-cyan:         #22D3EE;
 
-  --know-bg:         var(--know-off-white);
-  --know-text:       var(--know-navy);
-  --know-accent:     var(--know-red);
+  --vctr-bg:     var(--vctr-surface);
+  --vctr-text:   var(--vctr-black);
+  --vctr-accent: var(--vctr-indigo);
 }
 
 body {
-  background-color: var(--know-bg);
-  color:            var(--know-text);
+  background-color: var(--vctr-bg);
+  color:            var(--vctr-text);
 }
 
-/* 스크롤바 숨기기 (카테고리 네비) */
+/* Hide scrollbar on category nav */
 .scrollbar-none::-webkit-scrollbar { display: none; }
 .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* 기사 본문 타이포그래피 */
+/* Article body typography */
 .article-body p {
   margin-bottom: 1.5rem;
   line-height:   1.8;

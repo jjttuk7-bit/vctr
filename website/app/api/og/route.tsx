@@ -1,27 +1,23 @@
-// OG 이미지 자동생성 — @vercel/og (Vercel 서버 런타임 전용)
-// GitHub Pages 정적 빌드(STATIC_EXPORT=true) 시 이 라우트는 포함되지 않음
-// 참조: BRANDING.md 7절 / KWAVE_DAILY_PLAN.md 4.4절
+// Vctr OG image generator — @vercel/og (Vercel edge runtime only)
+// GitHub Pages static export (STATIC_EXPORT=true) excludes this route
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
 
 const CATEGORY_COLORS: Record<string, string> = {
-  'K-Beauty':        '#D4537E',
-  'K-Drama':         '#7F77DD',
-  'K-Pop':           '#D85A30',
-  'K-Food':          '#BA7517',
-  'K-Fashion':       '#444441',
-  'K-Lifestyle':     '#1D9E75',
-  'K-Travel':        '#378ADD',
-  'K-Sport':         '#639922',
-  'K-Entertainment': '#E24B4A',
+  'AI Writing':   '#6366F1',
+  'AI Image':     '#EC4899',
+  'Productivity': '#10B981',
+  'Dev Tools':    '#F59E0B',
+  'No-Code':      '#3B82F6',
+  'Marketing':    '#EF4444',
 }
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
-  const title    = searchParams.get('title')    ?? 'KNow Korea'
-  const category = searchParams.get('category') ?? 'K-Pop'
-  const bg       = CATEGORY_COLORS[category]    ?? '#C0392B'
+  const title    = searchParams.get('title')    ?? 'Vctr — Find your vector.'
+  const category = searchParams.get('category') ?? 'AI Writing'
+  const bg       = CATEGORY_COLORS[category]    ?? '#6366F1'
 
   return new ImageResponse(
     (
@@ -38,37 +34,37 @@ export async function GET(req: Request) {
           overflow:       'hidden',
         }}
       >
-        {/* 데코 원 */}
+        {/* Deco circle */}
         <div
           style={{
             position:     'absolute',
             right:        -40,
             bottom:       -40,
-            width:        200,
-            height:       200,
+            width:        220,
+            height:       220,
             borderRadius: '50%',
-            background:   'rgba(255,255,255,0.12)',
+            background:   'rgba(255,255,255,0.10)',
           }}
         />
 
-        {/* 로고 */}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <span style={{ fontSize: 24, fontWeight: 700, color: '#fff' }}>K</span>
-          <span style={{ fontSize: 24, fontWeight: 300, color: 'rgba(255,255,255,0.85)' }}>Now</span>
+        {/* Logo: V (bold) + ctr (light) */}
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+          <span style={{ fontSize: 28, fontWeight: 900, color: '#fff' }}>V</span>
+          <span style={{ fontSize: 28, fontWeight: 200, color: 'rgba(255,255,255,0.85)' }}>ctr</span>
         </div>
 
-        {/* 콘텐츠 */}
+        {/* Content */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <span
             style={{
               background:    'rgba(255,255,255,0.2)',
               color:         '#fff',
-              fontSize:      14,
-              fontWeight:    500,
+              fontSize:      13,
+              fontWeight:    600,
               padding:       '4px 14px',
               borderRadius:  20,
               width:         'fit-content',
-              letterSpacing: '0.06em',
+              letterSpacing: '0.08em',
             }}
           >
             {category.toUpperCase()}

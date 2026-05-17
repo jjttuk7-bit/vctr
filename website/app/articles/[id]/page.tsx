@@ -57,7 +57,7 @@ export default function ArticlePage({ params }: Props) {
           <span className="text-xs text-gray-400">· {readTime(article.body_en)} min read</span>
         </div>
 
-        <h1 className="text-2xl md:text-3xl font-bold text-know-navy leading-snug">
+        <h1 className="text-2xl md:text-3xl font-bold text-vctr-black leading-snug">
           {article.headline_en}
         </h1>
 
@@ -100,7 +100,7 @@ export default function ArticlePage({ params }: Props) {
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-white/20 text-8xl font-bold select-none">
-              {article.category.replace('K-', '')}
+              {article.category.split(' ')[0]}
             </span>
           </div>
         )}
@@ -146,14 +146,17 @@ export default function ArticlePage({ params }: Props) {
             href={article.source_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-know-red break-all"
+            className="underline hover:text-vctr-indigo break-all"
           >
             {article.source_url}
           </a>
         </p>
         <p className="text-xs text-gray-400 mt-1">
-          Originally reported via {article.source_name === 'naver' ? 'Naver News' : 'Daum News'}.
-          This article was independently rewritten based on facts only.
+          Originally sourced via{' '}
+          {article.source_name === 'producthunt' ? 'ProductHunt'
+            : article.source_name === 'github_trending' ? 'GitHub Trending'
+            : article.source_name}.
+          {' '}This review was independently written based on tool facts only.
         </p>
       </div>
 

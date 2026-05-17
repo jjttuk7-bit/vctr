@@ -1,28 +1,25 @@
 /** @type {import('tailwindcss').Config} */
-// 참조: BRANDING.md 4절
+// Synced with BRANDING.md and config.yaml brand_colors
 module.exports = {
   content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        // 브랜드 코어
-        'know-red':        '#C0392B',
-        'know-red-light':  '#E8534A',
-        'know-red-dark':   '#922B21',
-        'know-navy':       '#1A1A2E',
-        'know-navy-light': '#2C2C4A',
-        'know-white':      '#FAF9F6',
-        'know-gold':       '#E8B86D',
-        // 카테고리
-        'cat-beauty':      '#D4537E',
-        'cat-drama':       '#7F77DD',
-        'cat-pop':         '#D85A30',
-        'cat-food':        '#BA7517',
-        'cat-fashion':     '#444441',
-        'cat-lifestyle':   '#1D9E75',
-        'cat-travel':      '#378ADD',
-        'cat-sport':       '#639922',
-        'cat-ent':         '#E24B4A',
+        // Brand core
+        'vctr-indigo':       '#6366F1',
+        'vctr-indigo-light': '#818CF8',
+        'vctr-indigo-dark':  '#4338CA',
+        'vctr-black':        '#0A0A0F',
+        'vctr-black-2':      '#1C1C28',
+        'vctr-surface':      '#F8FAFC',
+        'vctr-cyan':         '#22D3EE',
+        // Category
+        'cat-aiwriting':     '#6366F1',
+        'cat-aiimage':       '#EC4899',
+        'cat-productivity':  '#10B981',
+        'cat-devtools':      '#F59E0B',
+        'cat-nocode':        '#3B82F6',
+        'cat-marketing':     '#EF4444',
       },
       fontFamily: {
         sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],

@@ -1,0 +1,31 @@
+CATEGORY: Productivity
+STYLE REFERENCE: Notion blog, Linear blog, Hacker News discussions
+READER GOAL: I want to know if switching to this tool will actually save me time
+
+WRITING STYLE:
+- Lead with the workflow problem it solves — not the feature list
+  "Your team has 14 tools. This replaces three of them."
+- Be specific about who it's for: solo knowledge worker, 5-person startup, 500-person company
+- Address integration depth: does it connect to Slack, GitHub, Google Calendar?
+- Evaluate the learning curve honestly: "usable in a day" vs "requires onboarding"
+- Cite real numbers: "I completed my weekly review in 8 minutes, down from 25"
+
+QUALITY MARKERS TO EVALUATE:
+- Setup time to first value (minutes to hours to days)
+- Team collaboration features: real-time editing, comments, permissions
+- Mobile experience quality (not just "has a mobile app")
+- Offline capability
+- Data export: can you leave easily? (crucial for trust)
+- API availability for custom workflows
+
+HEADLINE STYLE:
+  "[Tool] Review: The Productivity App That [Specific Claim]"
+  "We Switched Our Team to [Tool] — 60-Day Honest Review"
+  "Why [Tool] Is Replacing [Legacy Tool] for [Team Type]"
+
+TONE: Like a smart ops lead who has tried every productivity tool and is tired of hype.
+Practical, time-obsessed, integration-aware.
+
+UNSPLASH KEYWORDS FOCUS:
+["minimal workspace overhead shot", "planning notebook flat lay",
+ "clean desk morning light", "team collaboration office", "calendar schedule planning"]

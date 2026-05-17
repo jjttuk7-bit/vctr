@@ -1,16 +1,16 @@
 """
-agent/main.py — KNow 파이프라인 오케스트레이터
-진입점: python -m agent.main [--dry-run]
+agent/main.py — Vctr pipeline orchestrator
+Entry point: python -m agent.main [--dry-run]
 
-파이프라인 3단계:
-  [Collector]     Naver + Daum → CollectedArticle 목록
-  [FactExtractor] CollectedArticle → ArticleFacts (regex, LLM 없음)
-  [Processor]     ArticleFacts → ProcessedArticle (LLM 재작성)
-  [ImageFetcher]  ProcessedArticle → ImageResult (Unsplash / YouTube)
-  [Publisher]     → DB 저장 → daily_digest → git push
-  [Notifier]      → 이메일 + Discord
+Pipeline stages:
+  [Collector]     ProductHunt + GitHub Trending → CollectedArticle list
+  [FactExtractor] CollectedArticle → ArticleFacts (regex, no LLM)
+  [Processor]     ArticleFacts → ProcessedArticle (LLM review writing)
+  [ImageFetcher]  ProcessedArticle → ImageResult (Unsplash)
+  [Publisher]     → DB save → daily_digest → git push
+  [Notifier]      → email + Discord
 
-성능 목표: < 120초 / 일 (CLAUDE.md)
+Performance target: < 120s / day
 """
 
 from __future__ import annotations
@@ -64,36 +64,36 @@ async def run_pipeline(dry_run: bool = False) -> None:
     today = date.today()
 
     logger.info("=" * 52)
-    logger.info("KNow 파이프라인 시작  [%s]  dry_run=%s", today, dry_run)
+    logger.info("Vctr pipeline starting  [%s]  dry_run=%s", today, dry_run)
     logger.info("=" * 52)
 
-    # ── 1. 수집 ───────────────────────────────────────────────
+    # ── 1. Collect ────────────────────────────────────────────
     t = time.monotonic()
     collector = Collector()
     collected = await collector.collect_all()
-    logger.info("[1/6] 수집 완료: %d건  (%.1fs)", len(collected), time.monotonic() - t)
+    logger.info("[1/6] Collected: %d items  (%.1fs)", len(collected), time.monotonic() - t)
 
     if not collected:
-        logger.info("수집된 기사 없음 — 파이프라인 종료")
+        logger.info("No items collected — pipeline done")
         return
 
-    # ── 2. 팩트 추출 (LLM 없음) ───────────────────────────────
+    # ── 2. Extract facts (no LLM) ─────────────────────────────
     t = time.monotonic()
     extractor  = FactExtractor()
     facts_list = extractor.extract_all(collected)
-    logger.info("[2/6] 팩트 추출 완료: %d건  (%.1fs)", len(facts_list), time.monotonic() - t)
+    logger.info("[2/6] Facts extracted: %d items  (%.1fs)", len(facts_list), time.monotonic() - t)
 
-    # ── 3. LLM 재작성 ─────────────────────────────────────────
+    # ── 3. LLM review writing ─────────────────────────────────
     t = time.monotonic()
     processor = Processor()
     processed = await processor.process_all(facts_list)
-    logger.info("[3/6] LLM 처리 완료: %d건  (%.1fs)", len(processed), time.monotonic() - t)
+    logger.info("[3/6] LLM processed: %d items  (%.1fs)", len(processed), time.monotonic() - t)
 
     if not processed:
-        logger.info("처리된 기사 없음 — 파이프라인 종료")
+        logger.info("No items processed — pipeline done")
         return
 
-    # ── 4. 이미지 페치 (병렬) ─────────────────────────────────
+    # ── 4. Image fetch (parallel) ─────────────────────────────
     t = time.monotonic()
     image_fetcher = ImageFetcher()
     images = await asyncio.gather(
@@ -102,7 +102,7 @@ async def run_pipeline(dry_run: bool = False) -> None:
     hit  = sum(1 for img in images if img is not None)
     miss = len(images) - hit
     logger.info(
-        "[4/6] 이미지 완료: %d건 (hit=%d miss=%d)  (%.1fs)",
+        "[4/6] Images done: %d items (hit=%d miss=%d)  (%.1fs)",
         len(images), hit, miss, time.monotonic() - t,
     )
 
@@ -150,7 +150,7 @@ async def run_pipeline(dry_run: bool = False) -> None:
 # 유틸
 # ─────────────────────────────────────────────────────────────
 
-_DB_PATH = "website/data/know.db"   # publisher와 동일 경로
+_DB_PATH = "website/data/vctr.db"   # same path as publisher
 
 def _load_articles(article_ids: list[int]) -> list[Article]:
     """게시된 기사를 DB에서 조회 (알림 발송용)."""
@@ -167,7 +167,7 @@ def _load_articles(article_ids: list[int]) -> list[Article]:
 def _log_dry_run_summary(
     pairs: list[tuple]
 ) -> None:
-    logger.info("── dry-run 결과 미리보기 (%d건) ──", len(pairs))
+    logger.info("── dry-run preview (%d items) ──", len(pairs))
     for article, image in pairs[:5]:
         img_src = image.source if image else "og_generated"
         logger.info(
@@ -182,9 +182,9 @@ def _log_dry_run_summary(
 
 def _log_elapsed(t0: float) -> None:
     elapsed = time.monotonic() - t0
-    flag    = "⚠️  목표 초과" if elapsed > _PERF_TARGET_SEC else "✓"
+    flag    = "SLOW (over target)" if elapsed > _PERF_TARGET_SEC else "OK"
     logger.info("=" * 52)
-    logger.info("파이프라인 종료: %.1f초  %s", elapsed, flag)
+    logger.info("Pipeline done: %.1fs  %s", elapsed, flag)
     logger.info("=" * 52)
 
 
@@ -193,7 +193,7 @@ def _log_elapsed(t0: float) -> None:
 # ─────────────────────────────────────────────────────────────
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="KNow daily pipeline")
+    parser = argparse.ArgumentParser(description="Vctr daily pipeline")
     parser.add_argument(
         "--dry-run",
         action="store_true",

@@ -9,20 +9,20 @@ export default function Header() {
   const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-50 bg-know-white/95 backdrop-blur border-b border-[#E8E6DF]">
+    <header className="sticky top-0 z-50 bg-vctr-surface/95 backdrop-blur border-b border-slate-200">
       <div className="max-w-6xl mx-auto px-4">
-        {/* 상단 줄: 로고 + 검색 */}
+        {/* Top row: logo + search */}
         <div className="flex items-center justify-between h-14 gap-4">
           <Logo size="sm" />
           <SearchBar />
         </div>
 
-        {/* 카테고리 네비 */}
+        {/* Category nav */}
         <nav className="flex gap-1 overflow-x-auto pb-2 -mb-px scrollbar-none">
           {MVP_CATEGORIES.map(cat => {
-            const slug    = catToSlug(cat)
-            const active  = pathname === `/${slug}` || pathname === `/${slug}/`
-            const { bg }  = getCatColor(cat)
+            const slug   = catToSlug(cat)
+            const active = pathname === `/${slug}` || pathname === `/${slug}/`
+            const { bg } = getCatColor(cat)
             return (
               <Link
                 key={cat}

@@ -1,0 +1,30 @@
+CATEGORY: AI Image
+STYLE REFERENCE: Ars Technica, Digital Trends, Creativebloq
+READER GOAL: I want to know what this tool's images actually look like — and if they beat what I use
+
+WRITING STYLE:
+- Open with a specific image generation scenario: "Generate a product mockup on a white background"
+- Be explicit about what model version is being used (v5, v6, SDXL, etc.) — version matters enormously
+- Evaluate prompt understanding: does it follow negative prompts? handle complex compositions?
+- Discuss style consistency: can it replicate a look across a batch?
+- Address practical constraints: watermarks, commercial licensing, NSFW filters, API access
+
+QUALITY MARKERS TO EVALUATE:
+- Prompt adherence (does it make what you asked for?)
+- Photorealism vs. artistic style range
+- Coherence of details (hands, text, faces — where models fail)
+- Generation speed (seconds per image matters at scale)
+- Resolution and upscaling options
+- Licensing: can output be used commercially?
+
+HEADLINE STYLE:
+  "[Tool] vs [Competitor]: Which AI Image Generator Wins for [Use Case]?"
+  "Midjourney Has Competition: [Tool] Just Raised the Bar for [Specific Style]"
+  "[Tool]: The AI Image Model Designers Are Quietly Switching To"
+
+TONE: Like a visual artist who also understands the technical side.
+Honest about limitations. Specific about what the images actually look like.
+
+UNSPLASH KEYWORDS FOCUS:
+["digital art abstract colors", "creative studio lights bokeh",
+ "generative design pattern", "artist workspace tools", "visual creation studio"]
