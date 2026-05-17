@@ -111,8 +111,11 @@ class Collector:
     def __init__(self, config: dict | None = None) -> None:
         self._cfg          = config or _load_config()
         self._semaphore    = asyncio.Semaphore(self._cfg["pipeline"]["concurrency"])
-        self._ph_semaphore = asyncio.Semaphore(1)   # PH rate limit ~1 req/sec
-        self._ph_token     = os.getenv("PRODUCTHUNT_API_KEY", "")
+        self._ph_semaphore   = asyncio.Semaphore(1)   # PH rate limit ~1 req/sec
+        self._ph_token       = os.getenv("PRODUCTHUNT_API_KEY", "")
+        self._reddit_id      = os.getenv("REDDIT_CLIENT_ID", "")
+        self._reddit_secret  = os.getenv("REDDIT_CLIENT_SECRET", "")
+        self._reddit_token:  str = ""   # filled by _get_reddit_token()
         self._window       = timedelta(hours=self._cfg["pipeline"]["fetch_window_hours"])
         self._max_per_cat  = self._cfg["llm"]["max_articles_per_category"]
         self._keywords     = self._cfg["category_keywords"]
@@ -139,6 +142,9 @@ class Collector:
 
             if self._cfg["sources"].get("hackernews", {}).get("enabled"):
                 tasks.append(self._fetch_hackernews(client))
+
+            if self._cfg["sources"].get("reddit", {}).get("enabled"):
+                tasks.append(self._fetch_reddit(client))
 
             batches  = await asyncio.gather(*tasks, return_exceptions=True)
             raw      = self._dedupe_and_filter(batches)
@@ -376,6 +382,144 @@ class Collector:
                 break
         return "\n".join(comments)
 
+    # ── Reddit ────────────────────────────────────────────────
+
+    async def _get_reddit_token(self, client: httpx.AsyncClient) -> str:
+        """OAuth client_credentials — 1시간 유효, 매 파이프라인 실행 시 갱신."""
+        if not self._reddit_id or not self._reddit_secret:
+            return ""
+        try:
+            r = await client.post(
+                "https://www.reddit.com/api/v1/access_token",
+                auth=(self._reddit_id, self._reddit_secret),
+                data={"grant_type": "client_credentials"},
+                headers={"User-Agent": "Vctr/1.0 (contact: hello@vctr.io)"},
+            )
+            r.raise_for_status()
+            token = r.json().get("access_token", "")
+            logger.info("Reddit OAuth token obtained")
+            return token
+        except httpx.HTTPError as exc:
+            logger.warning("Reddit OAuth failed: %s", exc)
+            return ""
+
+    async def _fetch_reddit(
+        self, client: httpx.AsyncClient
+    ) -> list[CollectedArticle]:
+        """Collect top posts from AI/SaaS subreddits via public JSON API."""
+        reddit_cfg   = self._cfg["sources"]["reddit"]
+        subreddits   = reddit_cfg.get("subreddits", [])
+        min_score    = reddit_cfg.get("min_score", 50)
+        min_comments = reddit_cfg.get("min_comments", 10)
+        window_h     = reddit_cfg.get("fetch_window_hours", 48)
+        cutoff_ts    = time.time() - window_h * 3600
+
+        # OAuth 사용 가능하면 oauth.reddit.com, 없으면 공개 API 폴백
+        token = await self._get_reddit_token(client)
+        if token:
+            base_url = "https://oauth.reddit.com/r"
+            headers  = {
+                "Authorization": f"Bearer {token}",
+                "User-Agent":    "Vctr/1.0 (contact: hello@vctr.io)",
+            }
+        else:
+            base_url = "https://www.reddit.com/r"
+            headers  = {"User-Agent": "Vctr/1.0 AI-tool-review-media (contact: hello@vctr.io)"}
+            logger.info("Reddit: no OAuth credentials, using public API")
+
+        tasks = [
+            self._fetch_subreddit(client, sr, min_score, min_comments, cutoff_ts, headers, base_url)
+            for sr in subreddits
+        ]
+        batches = await asyncio.gather(*tasks, return_exceptions=True)
+
+        results = []
+        for batch in batches:
+            if isinstance(batch, list):
+                results.extend(batch)
+            elif isinstance(batch, BaseException):
+                logger.warning("Reddit subreddit fetch error: %s", batch)
+
+        logger.info("Reddit: %d posts matched categories", len(results))
+        return results
+
+    async def _fetch_subreddit(
+        self,
+        client:       httpx.AsyncClient,
+        subreddit:    str,
+        min_score:    int,
+        min_comments: int,
+        cutoff_ts:    float,
+        headers:      dict,
+        base_url:     str = "https://www.reddit.com/r",
+    ) -> list[CollectedArticle]:
+        url    = f"{base_url}/{subreddit}/hot.json"
+        params = {"limit": 50}
+
+        async with self._semaphore:
+            try:
+                r = await client.get(url, params=params, headers=headers)
+                r.raise_for_status()
+            except httpx.HTTPError as exc:
+                logger.warning("Reddit r/%s failed: %s", subreddit, exc)
+                return []
+
+        posts   = r.json().get("data", {}).get("children", [])
+        results = []
+
+        for child in posts:
+            post = child.get("data", {})
+
+            # Quality filters
+            score    = int(post.get("score", 0))
+            num_cmts = int(post.get("num_comments", 0))
+            created  = float(post.get("created_utc", 0))
+            if score < min_score or num_cmts < min_comments:
+                continue
+            if created < cutoff_ts:
+                continue
+            if post.get("stickied") or post.get("pinned"):
+                continue
+
+            title = (post.get("title") or "").strip()
+            if not title:
+                continue
+
+            # Source URL: external link or Reddit thread
+            post_url  = post.get("url", "")
+            permalink = "https://www.reddit.com" + post.get("permalink", "")
+            is_self   = post.get("is_self", False)
+            source_url = permalink if is_self else post_url
+
+            # Content: title + selftext (for self posts) or link flair
+            selftext = _strip_html(post.get("selftext") or "")[:800]
+            summary  = title
+            if selftext and len(selftext) > 40:
+                summary = title + ". " + selftext
+
+            # Category assignment — use title + selftext + subreddit name
+            category = self._assign_category(title + " " + summary + " " + subreddit)
+            if category is None:
+                continue
+
+            pub_dt = datetime.fromtimestamp(created, tz=timezone.utc)
+
+            # Thumbnail — prefer high-quality preview image
+            thumbnail_url = _extract_reddit_thumbnail(post)
+
+            results.append(CollectedArticle(
+                source_url=source_url,
+                source_name="reddit",
+                title_ko=title,
+                summary_ko=summary,
+                published_at_ko=pub_dt,
+                category=category,
+                votes_count=score,
+                thumbnail_url=thumbnail_url,
+            ))
+
+        return results
+
     # ── Phase 2: README enrichment ────────────────────────────
 
     async def _enrich_item(
@@ -459,6 +603,25 @@ class Collector:
 # ─────────────────────────────────────────────────────────────
 # Utility
 # ─────────────────────────────────────────────────────────────
+
+def _extract_reddit_thumbnail(post: dict) -> str:
+    """Extract the best-quality thumbnail URL from a Reddit post dict."""
+    # 1. High-quality preview image (needs HTML entity unescape)
+    preview = post.get("preview") or {}
+    images  = preview.get("images") or []
+    if images:
+        source = images[0].get("source") or {}
+        url    = _html_module.unescape(source.get("url", ""))
+        if url.startswith("http"):
+            return url
+
+    # 2. Low-res thumbnail (sometimes "self", "default", etc. — skip those)
+    thumb = post.get("thumbnail", "")
+    if thumb and thumb.startswith("http"):
+        return thumb
+
+    return ""
+
 
 def _infer_pricing(pricing_plans: list) -> str:
     if not pricing_plans:

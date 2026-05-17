@@ -309,6 +309,20 @@ sources:
     display:     "GitHub Trending"
     url:         "https://github.com/trending"
 
+  reddit:
+    enabled:     true
+    display:     "Reddit"
+    api_base:    "https://www.reddit.com/r"
+    min_score:   50          # 최소 upvote — 저품질 포스트 차단
+    min_comments: 10         # 최소 댓글 수 — 반응 없는 포스트 제외
+    fetch_window_hours: 48   # 48시간 이내 포스트만
+    subreddits:
+      - "SaaS"               # SaaS 제품 실사용 후기
+      - "artificial"         # AI 툴 토론
+      - "productivity"       # 생산성 툴 비교
+      - "nocode"             # 노코드 빌더 경험담
+      - "webdev"             # 개발자 툴 추천
+
   hackernews:
     enabled:          true
     display:          "Hacker News"

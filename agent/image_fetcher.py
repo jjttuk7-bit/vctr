@@ -93,18 +93,23 @@ class ImageFetcher:
             return None
 
         # Determine source from URL, not source_name
-        # (HN items can also link to GitHub repos)
         if "opengraph.github.com" in url:
             source = "github_preview"
         elif "producthunt" in url or "imgix.net" in url or "ph-files" in url:
             source = "producthunt_thumbnail"
+        elif "redd.it" in url:
+            source = "reddit_preview"
         else:
             source = "official_thumbnail"
 
         # Skip HEAD verification for trusted CDN domains.
         # opengraph.github.com and PH CDN always return valid images
         # for URLs that were set from their respective APIs.
-        _TRUSTED = ("opengraph.github.com", "imgix.net", "ph-files", "producthunt")
+        _TRUSTED = (
+            "opengraph.github.com",
+            "imgix.net", "ph-files", "producthunt",
+            "preview.redd.it", "i.redd.it",   # Reddit preview images
+        )
         if any(t in url for t in _TRUSTED):
             return ImageResult(
                 url=url,
