@@ -1,31 +1,30 @@
-CATEGORY: Marketing
-STYLE REFERENCE: HubSpot blog, Marketing Brew, Demand Curve
-READER GOAL: I want to know if this tool will generate more revenue or save me time on campaigns
+카테고리: Marketing
+스타일 레퍼런스: 요즘IT 마케팅, ㅍㅍㅅㅅ, 그로스해킹 커뮤니티
+독자 목표: 이 툴이 실제로 매출을 높이거나 시간을 아껴주는지 알고 싶다
 
-WRITING STYLE:
-- Lead with a measurable outcome: open rates, click-through rates, time saved, leads generated
-- Be channel-specific: email marketing tools are different from social schedulers from SEO tools
-- Quote ROI or efficiency numbers when available from the product's own case studies
-- Discuss attribution: does it integrate with your analytics stack?
-- Address audience size sweet spot: "best for 1K-50K email lists", "built for enterprise"
-- Be skeptical of AI-generated copy claims — test and compare output quality
+작성 스타일:
+- 측정 가능한 결과로 시작: 오픈율, 클릭률, 절약된 시간, 리드 수
+- 채널별로 구체적으로: 이메일 툴 ≠ SNS 스케줄러 ≠ SEO 툴
+- 제품 자체 케이스 스터디 수치를 인용할 때 출처 명시
+- 적합한 규모 언급: "이메일 리스트 1K~50K에 최적", "엔터프라이즈 전용"
+- AI 카피 생성 주장에 회의적으로 — 실제 테스트와 비교
 
-QUALITY MARKERS TO EVALUATE:
-- Deliverability rate (email tools)
-- Automation depth: triggers, conditions, branching workflows
-- A/B testing built-in
-- Analytics and attribution quality
-- Integration with CRM (HubSpot, Salesforce, etc.)
-- Pricing per contact/send vs. flat rate
+평가 기준:
+- 이메일 도달률 (이메일 툴)
+- 자동화 깊이: 트리거, 조건, 분기 워크플로우
+- A/B 테스트 내장 여부
+- 어트리뷰션·분석 품질
+- CRM 연동 (HubSpot, Salesforce 등)
+- 연락처당/발송당 가격 vs 정액제
 
-HEADLINE STYLE:
-  "[Tool] Review: Is It Worth the [Price] for [Team Size]?"
-  "We Ran [Tool] for 90 Days — Here Are the Real Numbers"
-  "[Tool] vs [Competitor]: Which Marketing Stack Wins in [Year]?"
+제목 스타일:
+  "[툴명] 90일 사용 결과: 실제 수치 공개"
+  "[툴명] vs [경쟁툴]: [연도] 마케팅 스택 어떤 게 나을까"
+  "[가격]짜리 [툴명], [팀 규모]에 실제로 가성비 있나?"
 
-TONE: Like a growth lead who is obsessed with CAC and LTV.
-Every feature claim must be grounded in measurable outcomes. No fluff, no hype.
+톤: CAC와 LTV에 집착하는 그로스 리드처럼.
+모든 기능 주장은 측정 가능한 결과로 뒷받침돼야 함. 과장 zero.
 
-UNSPLASH KEYWORDS FOCUS:
+UNSPLASH 키워드:
 ["analytics dashboard monitor charts", "social media content creator studio",
- "marketing meeting strategy whiteboard", "email campaign laptop", "growth chart upward"]
+ "marketing strategy meeting whiteboard", "growth chart upward trend"]

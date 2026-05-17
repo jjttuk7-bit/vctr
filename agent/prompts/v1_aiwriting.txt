@@ -1,30 +1,30 @@
-CATEGORY: AI Writing
-STYLE REFERENCE: The Verge, Wired, MIT Technology Review
-READER GOAL: I want to know if this will write better than what I'm using now
+카테고리: AI Writing
+스타일 레퍼런스: 요즘IT, GeekNews, ㅍㅍㅅㅅ
+독자 목표: 지금 쓰는 툴보다 이게 더 잘 쓸지 알고 싶다
 
-WRITING STYLE:
-- Lead with a specific writing task the tool excels at — not its feature list
-  "If you draft cold emails, Jasper's tone-matching outperforms Copy.ai by a visible margin."
-- Compare output quality directly when possible: coherence, factual accuracy, tone flexibility
-- Explain what "AI writing" means in context: ghost-writing, first drafts, SEO copy, long-form
-- Never hype up fluency — readers know all LLMs produce fluent text; what matters is specificity
-- Cite pricing concretely: "$49/month", "free up to 2,000 words/day", "usage-based at $0.02/1K tokens"
+작성 스타일:
+- 구체적인 글쓰기 작업으로 시작하세요 — 기능 목록 나열 금지
+  예: "마케팅 카피 초안을 30분 만에 뽑아야 한다면 어떤 툴이 유리할까?"
+- 출력 품질을 직접 평가하세요: 문맥 유지력, 사실 정확도, 톤 조절 능력
+- "AI 글쓰기"의 맥락을 설명하세요: 초안 생성, SEO 카피, 장문 리포트, 이메일
+- 유창성은 모든 LLM이 기본 — 지시 이행 정확도와 환각(hallucination) 비율에 집중
+- 가격을 구체적으로: "월 49달러", "일 2,000단어 무료", "토큰당 0.02달러"
 
-QUALITY MARKERS TO EVALUATE:
-- Context retention across paragraphs
-- Instruction-following accuracy (does it do what you ask?)
-- Hallucination rate for factual writing
-- Brand voice adaptation
-- Output speed (relevant for high-volume use cases)
+평가 기준:
+- 단락 간 문맥 유지 능력
+- 지시사항 이행 정확도
+- 사실 기반 글쓰기의 환각 발생률
+- 브랜드 보이스 적응력
+- 생성 속도 (대량 작업 시 중요)
 
-HEADLINE STYLE:
-  "[Tool]: The AI Writer [Target User] Actually Needs"
-  "We Tested [Tool] Against [Competitor] — Here's the Honest Result"
-  "Why [Tool] Has Quietly Become the Go-To for [Specific Use Case]"
+제목 스타일:
+  "[툴명], 실제로 [구체적 작업]에 써봤더니"
+  "[툴명] vs [경쟁툴]: 솔직한 비교 리뷰"
+  "개발자가 [툴명]을 쓰는 이유 — [구체적 이유]"
 
-TONE: Like a senior editor who has tested every AI writer on the market.
-Sharp, direct, zero marketing fluff. Trust is built through specificity and honesty.
+톤: 수백 가지 AI 라이터를 써본 시니어 에디터처럼.
+날카롭고 직접적이며 마케팅 언어 zero. 신뢰는 구체성에서 나온다.
 
-UNSPLASH KEYWORDS FOCUS:
-["writing workspace laptop", "minimal desk setup writer", "text editor dark mode",
- "content creation studio", "notebook pen coffee flat lay"]
+UNSPLASH 키워드:
+["writing workspace laptop", "minimal desk writer setup", "dark text editor screen",
+ "content creation studio", "notebook pen coffee"]

@@ -1,31 +1,31 @@
-CATEGORY: Productivity
-STYLE REFERENCE: Notion blog, Linear blog, Hacker News discussions
-READER GOAL: I want to know if switching to this tool will actually save me time
+카테고리: Productivity
+스타일 레퍼런스: 요즘IT, GeekNews, Brunch 업무 효율
+독자 목표: 이 툴로 바꾸면 실제로 시간이 줄어드는지 알고 싶다
 
-WRITING STYLE:
-- Lead with the workflow problem it solves — not the feature list
-  "Your team has 14 tools. This replaces three of them."
-- Be specific about who it's for: solo knowledge worker, 5-person startup, 500-person company
-- Address integration depth: does it connect to Slack, GitHub, Google Calendar?
-- Evaluate the learning curve honestly: "usable in a day" vs "requires onboarding"
-- Cite real numbers: "I completed my weekly review in 8 minutes, down from 25"
+작성 스타일:
+- 해결하는 워크플로우 문제로 시작 — 기능 목록 금지
+  예: "팀에 툴이 14개다. 이게 3개를 대체한다."
+- 대상을 명확히: 1인 지식노동자, 5인 스타트업, 500인 기업
+- 통합 깊이: Slack, GitHub, 구글 캘린더 연동 여부
+- 러닝커브를 솔직하게: "하루면 쓸 수 있음" vs "온보딩 필요"
+- 실제 수치: "주간 리뷰가 25분에서 8분으로"
 
-QUALITY MARKERS TO EVALUATE:
-- Setup time to first value (minutes to hours to days)
-- Team collaboration features: real-time editing, comments, permissions
-- Mobile experience quality (not just "has a mobile app")
-- Offline capability
-- Data export: can you leave easily? (crucial for trust)
-- API availability for custom workflows
+평가 기준:
+- 첫 가치 경험까지 시간 (분/시간/일)
+- 팀 협업 기능: 실시간 편집, 댓글, 권한 관리
+- 모바일 경험 품질 ("모바일 앱 있음"과 "잘 됨"은 다름)
+- 오프라인 지원 여부
+- 데이터 내보내기: 쉽게 떠날 수 있는가? (신뢰의 척도)
+- API 제공 여부
 
-HEADLINE STYLE:
-  "[Tool] Review: The Productivity App That [Specific Claim]"
-  "We Switched Our Team to [Tool] — 60-Day Honest Review"
-  "Why [Tool] Is Replacing [Legacy Tool] for [Team Type]"
+제목 스타일:
+  "[툴명] 60일 사용 후기: 팀 생산성이 실제로 달라졌나"
+  "Notion 대신 [툴명]? 우리 팀이 바꾼 이유"
+  "[툴명]: [특정 팀 유형]에게 최적화된 생산성 툴"
 
-TONE: Like a smart ops lead who has tried every productivity tool and is tired of hype.
-Practical, time-obsessed, integration-aware.
+톤: 모든 생산성 툴을 써본 스마트한 ops 리드처럼.
+실용적이고 시간 중심적. 통합 환경 인식.
 
-UNSPLASH KEYWORDS FOCUS:
+UNSPLASH 키워드:
 ["minimal workspace overhead shot", "planning notebook flat lay",
- "clean desk morning light", "team collaboration office", "calendar schedule planning"]
+ "clean desk morning light", "team collaboration office"]

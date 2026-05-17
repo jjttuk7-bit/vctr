@@ -1,31 +1,31 @@
-CATEGORY: Dev Tools
-STYLE REFERENCE: Stack Overflow blog, The Pragmatic Engineer, tldrnewsletter
-READER GOAL: I want to know if this will make me write better code faster
+카테고리: Dev Tools
+스타일 레퍼런스: GeekNews, velog, 요즘IT 개발자 섹션
+독자 목표: 이 툴이 실제로 코드를 더 빠르고 잘 쓰게 해주는지 알고 싶다
 
-WRITING STYLE:
-- Lead with a concrete coding scenario: "While refactoring a 2,000-line Python file..."
-- Be explicit about IDE support: VS Code, JetBrains, Vim, Neovim, Emacs, web-only
-- Benchmark code accuracy: completion rate, hallucination rate for APIs, test generation quality
-- Address language support: which languages are first-class vs. community-supported
-- Discuss latency: "~150ms median completion" matters for developer experience
-- Be honest about privacy: local inference vs. cloud, code telemetry policies
+작성 스타일:
+- 구체적인 코딩 시나리오로 시작: "2,000줄짜리 Python 파일을 리팩토링할 때..."
+- IDE 지원을 명확히: VS Code, JetBrains, Vim, Neovim, 웹 전용
+- 코드 정확도 벤치마크: 완성률, API 환각 비율, 테스트 생성 품질
+- 언어 지원: 1등급 vs 커뮤니티 지원 언어 구분
+- 레이턴시: "중앙값 150ms" — 개발자 경험에서 체감됨
+- 프라이버시: 로컬 추론 vs 클라우드, 코드 텔레메트리 정책
 
-QUALITY MARKERS TO EVALUATE:
-- Autocomplete accuracy on real codebases (not toy examples)
-- Context window: how much code can it "see" at once?
-- Test generation quality
-- Documentation generation
-- Refactoring suggestions
-- Privacy and self-hosting options
+평가 기준:
+- 실제 코드베이스에서 자동완성 정확도 (예제 코드 아닌 실전)
+- 컨텍스트 윈도우: 한 번에 얼마나 많은 코드를 "볼" 수 있나
+- 테스트 생성 품질
+- 문서화 자동 생성
+- 리팩토링 제안 능력
+- 프라이버시·셀프호스팅 옵션
 
-HEADLINE STYLE:
-  "[Tool] vs [Competitor]: Which AI Coding Assistant Actually Saves Time?"
-  "We Used [Tool] for 30 Days — Here's What Changed in Our Codebase"
-  "[Tool] Just Added [Feature] — Why Senior Devs Are Paying Attention"
+제목 스타일:
+  "[툴명] vs [경쟁툴]: 실제 코드베이스에서 30일 비교"
+  "개발자들이 [툴명]으로 바꾸는 이유 — 수치로 증명"
+  "[기능] 추가한 [툴명], 시니어 개발자들이 주목하는 이유"
 
-TONE: Like a senior engineer who respects their own time.
-No marketing speak. Latency numbers and accuracy metrics matter more than marketing claims.
+톤: 자신의 시간을 소중히 여기는 시니어 엔지니어처럼.
+마케팅 언어 zero. 레이턴시 수치와 정확도가 광고 문구보다 중요.
 
-UNSPLASH KEYWORDS FOCUS:
-["code editor dark terminal", "developer laptop setup dual monitor",
- "server room blue light", "programming workspace dark", "software engineer desk"]
+UNSPLASH 키워드:
+["code editor dark terminal screen", "developer laptop dual monitor setup",
+ "server room blue light", "software engineer workspace"]

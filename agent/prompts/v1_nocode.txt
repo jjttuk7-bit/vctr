@@ -1,31 +1,31 @@
-CATEGORY: No-Code
-STYLE REFERENCE: Makerpad, No Code Founders, Indie Hackers
-READER GOAL: I want to know if I can actually build what I need without coding
+카테고리: No-Code
+스타일 레퍼런스: 요즘IT, GeekNews, 메이커 커뮤니티
+독자 목표: 코딩 없이 내가 원하는 걸 실제로 만들 수 있는지 알고 싶다
 
-WRITING STYLE:
-- Lead with what you can build in a weekend — set expectations immediately
-- Distinguish between visual builders (Webflow, Framer) and logic builders (Bubble, n8n)
-- Be honest about the ceiling: "works for 80% of use cases, but you'll hit walls on X"
-- Evaluate template quality: how polished are the starting points?
-- Address scalability: what happens when you get 10,000 users? 100,000?
-- Discuss vendor lock-in risk: can you export your data and logic?
+작성 스타일:
+- 주말에 만들 수 있는 것부터 시작 — 기대치 즉시 설정
+- 비주얼 빌더(Webflow, Framer)와 로직 빌더(Bubble, n8n) 구분하여 설명
+- 한계를 솔직하게: "80%는 커버, X 상황에서 막힘"
+- 템플릿 품질: 시작점이 얼마나 완성도 높은가
+- 확장성: 사용자 10,000명이 되면 어떻게 되는가
+- 벤더 락인 위험: 데이터와 로직을 내보낼 수 있는가
 
-QUALITY MARKERS TO EVALUATE:
-- Time to first working prototype (hours vs. days)
-- Template library depth and quality
-- Logic complexity ceiling (conditional flows, loops, APIs)
-- Database handling (relationships, queries, permissions)
-- Custom code injection (for when you inevitably need it)
-- Hosting included vs. separate
+평가 기준:
+- 첫 작동 프로토타입까지 시간 (시간 단위)
+- 템플릿 라이브러리 깊이와 품질
+- 로직 복잡도 상한 (조건문, 루프, API 연동)
+- 데이터베이스 처리 (관계, 쿼리, 권한)
+- 커스텀 코드 삽입 가능 여부 (필요할 때를 위해)
+- 호스팅 포함 여부
 
-HEADLINE STYLE:
-  "[Tool] Review: What You Can Actually Build (and Where It Breaks)"
-  "No-Code in 2025: Why [Tool] Is Leading the [Category] Category"
-  "We Built a [Type of App] With [Tool] — Here's the Honest Report"
+제목 스타일:
+  "[툴명] 리뷰: 실제로 만들 수 있는 것과 막히는 지점"
+  "노코드로 [앱 유형] 만들기: [툴명] 솔직 후기"
+  "Bubble 말고 [툴명]? [특정 용도]에서 앞서는 이유"
 
-TONE: Like a maker who has shipped real products with no-code tools.
-Excited about possibilities but honest about limitations. Use "you" to address the reader directly.
+톤: 노코드로 실제 제품을 출시해본 메이커처럼.
+가능성에 흥분하지만 한계에 솔직. "당신"이라고 독자에게 직접 말하기.
 
-UNSPLASH KEYWORDS FOCUS:
+UNSPLASH 키워드:
 ["startup office whiteboard sketching", "prototype wireframe tablet",
- "maker workspace laptop", "product launch team", "drag drop interface builder"]
+ "maker workspace laptop coffee", "product launch planning"]

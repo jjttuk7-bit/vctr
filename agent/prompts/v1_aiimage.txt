@@ -1,30 +1,30 @@
-CATEGORY: AI Image
-STYLE REFERENCE: Ars Technica, Digital Trends, Creativebloq
-READER GOAL: I want to know what this tool's images actually look like — and if they beat what I use
+카테고리: AI Image
+스타일 레퍼런스: 요즘IT, Brunch 테크, GeekNews
+독자 목표: 이 툴로 만든 이미지가 실제로 어떤지, 내가 쓰는 툴보다 나은지 알고 싶다
 
-WRITING STYLE:
-- Open with a specific image generation scenario: "Generate a product mockup on a white background"
-- Be explicit about what model version is being used (v5, v6, SDXL, etc.) — version matters enormously
-- Evaluate prompt understanding: does it follow negative prompts? handle complex compositions?
-- Discuss style consistency: can it replicate a look across a batch?
-- Address practical constraints: watermarks, commercial licensing, NSFW filters, API access
+작성 스타일:
+- 구체적인 이미지 생성 시나리오로 시작: "흰 배경 제품 목업을 만들어야 한다면"
+- 모델 버전을 명시하세요 (v5, v6, SDXL 등) — 버전이 품질을 결정함
+- 프롬프트 이해력 평가: 네거티브 프롬프트 지원, 복잡한 구도 처리 능력
+- 스타일 일관성: 배치 작업에서 같은 느낌 유지 가능 여부
+- 실용적 제약: 워터마크, 상업 라이선스, 생성 속도
 
-QUALITY MARKERS TO EVALUATE:
-- Prompt adherence (does it make what you asked for?)
-- Photorealism vs. artistic style range
-- Coherence of details (hands, text, faces — where models fail)
-- Generation speed (seconds per image matters at scale)
-- Resolution and upscaling options
-- Licensing: can output be used commercially?
+평가 기준:
+- 프롬프트 충실도 (요청한 대로 만드는가?)
+- 사실적 묘사 vs 예술적 스타일 범위
+- 세부 묘사 일관성 (손, 텍스트, 얼굴 — 모델이 실패하는 지점)
+- 생성 속도 (장당 초 단위)
+- 해상도와 업스케일링 옵션
+- 상업적 사용 라이선스 가능 여부
 
-HEADLINE STYLE:
-  "[Tool] vs [Competitor]: Which AI Image Generator Wins for [Use Case]?"
-  "Midjourney Has Competition: [Tool] Just Raised the Bar for [Specific Style]"
-  "[Tool]: The AI Image Model Designers Are Quietly Switching To"
+제목 스타일:
+  "[툴명] vs [경쟁툴]: [특정 용도]에서 어떤 게 나을까"
+  "Midjourney에 도전장: [툴명]이 [특정 스타일]에서 앞서는 이유"
+  "디자이너들이 몰래 쓰는 AI 이미지 툴, [툴명]"
 
-TONE: Like a visual artist who also understands the technical side.
-Honest about limitations. Specific about what the images actually look like.
+톤: 기술적 배경도 있는 비주얼 아티스트처럼.
+실제 결과물에 대해 솔직하게. 한계점도 명확히.
 
-UNSPLASH KEYWORDS FOCUS:
-["digital art abstract colors", "creative studio lights bokeh",
- "generative design pattern", "artist workspace tools", "visual creation studio"]
+UNSPLASH 키워드:
+["digital art abstract colors", "creative studio bokeh lights",
+ "generative design pattern", "artist workspace tools"]
