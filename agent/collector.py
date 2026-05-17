@@ -53,6 +53,7 @@ class CollectedArticle:
     rating:          float            = 0.0
     pricing_type:    str              = ""   # "free" | "freemium" | "paid" | "unknown"
     maker_names:     list[str]        = field(default_factory=list)
+    thumbnail_url:   str              = ""   # official product image (PH thumbnail or GitHub OG)
 
 
 # ProductHunt GraphQL — top posts by topic
@@ -69,6 +70,7 @@ query getTopPosts($topic: String!, $first: Int!) {
         votesCount
         reviewsRating
         createdAt
+        thumbnail { url }
         makers { nodes { name } }
         pricing { planName isMonthlyPricing price }
       }
@@ -164,6 +166,7 @@ class Collector:
             pricing_type  = _infer_pricing(pricing_plans)
             votes         = int(node.get("votesCount") or 0)
             rating        = float(node.get("reviewsRating") or 0.0)
+            thumbnail_url = (node.get("thumbnail") or {}).get("url", "")
 
             results.append(CollectedArticle(
                 source_url=url,
@@ -176,6 +179,7 @@ class Collector:
                 rating=rating,
                 pricing_type=pricing_type,
                 maker_names=makers,
+                thumbnail_url=thumbnail_url,
             ))
         return results
 
@@ -220,6 +224,7 @@ class Collector:
                 summary_ko=desc,
                 published_at_ko=datetime.now(tz=timezone.utc),
                 category=category,
+                thumbnail_url=f"https://opengraph.github.com/repo/{repo}",
             ))
         return results
 

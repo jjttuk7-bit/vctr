@@ -90,6 +90,7 @@ class ProcessedArticle:
     tone:              str       = "informative"
     cultural_note:     str | None = None
     unsplash_keywords: list[str] = field(default_factory=list)
+    thumbnail_url:     str       = ""   # official product image passed from collector
 
 
 # ─────────────────────────────────────────────────────────────
@@ -224,6 +225,7 @@ class Processor:
             tone=str(data.get("tone", "informative")),
             cultural_note=data.get("cultural_note") or None,
             unsplash_keywords=keywords,
+            thumbnail_url=facts.thumbnail_url,
         )
 
 

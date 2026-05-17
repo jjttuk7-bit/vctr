@@ -59,9 +59,10 @@ class ArticleFacts:
     where:        str       = ""                             # deployment type
     numbers:      list[str] = field(default_factory=list)   # votes, pricing, metrics
     context:      str       = ""                             # extended description
-    pricing_type: str       = ""                             # free|freemium|paid|unknown
-    votes_count:  int       = 0
-    rating:       float     = 0.0
+    pricing_type:  str       = ""                             # free|freemium|paid|unknown
+    votes_count:   int       = 0
+    rating:        float     = 0.0
+    thumbnail_url: str       = ""                             # official product image
 
 
 # ─────────────────────────────────────────────────────────────
@@ -96,6 +97,7 @@ class FactExtractor:
             pricing_type=article.pricing_type,
             votes_count=article.votes_count,
             rating=article.rating,
+            thumbnail_url=article.thumbnail_url,
         )
 
     def extract_all(self, articles: list[CollectedArticle]) -> list[ArticleFacts]:
