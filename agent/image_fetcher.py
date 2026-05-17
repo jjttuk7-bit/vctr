@@ -89,23 +89,40 @@ class ImageFetcher:
         article: ProcessedArticle,
     ) -> ImageResult | None:
         url = article.thumbnail_url
-        source = (
-            "github_preview"
-            if article.source_name == "github_trending"
-            else "producthunt_thumbnail"
-        )
+        if not url:
+            return None
 
+        # Determine source from URL, not source_name
+        # (HN items can also link to GitHub repos)
+        if "opengraph.github.com" in url:
+            source = "github_preview"
+        elif "producthunt" in url or "imgix.net" in url or "ph-files" in url:
+            source = "producthunt_thumbnail"
+        else:
+            source = "official_thumbnail"
+
+        # Skip HEAD verification for trusted CDN domains.
+        # opengraph.github.com and PH CDN always return valid images
+        # for URLs that were set from their respective APIs.
+        _TRUSTED = ("opengraph.github.com", "imgix.net", "ph-files", "producthunt")
+        if any(t in url for t in _TRUSTED):
+            return ImageResult(
+                url=url,
+                source=source,
+                credit=None,
+                credit_url=None,
+                license=f"{source} — official product image",
+            )
+
+        # For other domains: verify with a HEAD request
         async with self._semaphore:
             try:
                 r = await client.head(url)
                 if r.status_code != 200:
                     return None
                 content_type = r.headers.get("content-type", "")
-                if not content_type.startswith("image/"):
-                    # GitHub OG returns image/png; PH thumbnails are image/jpeg or webp
-                    # If somehow it's HTML, reject it
-                    if "html" in content_type:
-                        return None
+                if "html" in content_type:
+                    return None
             except httpx.HTTPError as exc:
                 logger.debug("Official thumbnail check failed [%s]: %s", url, exc)
                 return None
