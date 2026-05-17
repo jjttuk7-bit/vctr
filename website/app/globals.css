@@ -1,4 +1,4 @@
-/* Vctr brand CSS variables — synced with BRANDING.md */
+/* Vctr brand CSS variables */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,25 +11,44 @@
   --vctr-black-2:      #1C1C28;
   --vctr-surface:      #F8FAFC;
   --vctr-cyan:         #22D3EE;
-
-  --vctr-bg:     var(--vctr-surface);
-  --vctr-text:   var(--vctr-black);
-  --vctr-accent: var(--vctr-indigo);
+  --vctr-border:       #E2E8F0;
 }
 
 body {
-  background-color: var(--vctr-bg);
-  color:            var(--vctr-text);
+  background-color: var(--vctr-surface);
+  color:            var(--vctr-black);
 }
 
-/* Hide scrollbar on category nav */
+/* ── Scrollbar hide (category nav) ──────────────────── */
 .scrollbar-none::-webkit-scrollbar { display: none; }
 .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Article body typography */
+/* ── Article body typography ─────────────────────────── */
+.article-body {
+  font-size:   1.0625rem;
+  line-height: 1.85;
+  color:       #1e293b;
+}
+
+/* Lead paragraph — first para slightly larger */
+.article-body p:first-of-type {
+  font-size:   1.125rem;
+  line-height: 1.8;
+  color:       #0f172a;
+  font-weight: 400;
+}
+
 .article-body p {
-  margin-bottom: 1.5rem;
-  line-height:   1.8;
-  font-size:     1.0625rem;
-  color:         #2C2C2C;
+  margin-bottom: 1.75rem;
+}
+
+.article-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Prose divider ────────────────────────────────────── */
+.prose-divider {
+  border: none;
+  border-top: 1px solid var(--vctr-border);
+  margin: 2rem 0;
 }
