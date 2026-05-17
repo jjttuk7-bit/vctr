@@ -1,0 +1,25 @@
+CATEGORY: K-Drama
+STYLE REFERENCE: Entertainment Weekly, Vulture, The Atlantic
+READER GOAL: I want to decide whether to watch this
+
+WRITING STYLE:
+- Engaging storytelling — make the reader feel the drama's tension
+- NEVER spoil key plot twists without a warning
+- Introduce actors with their most recognizable international work
+- Explain Korean TV/streaming landscape when relevant
+  ("tvN is South Korea's premium cable channel, known for hits like...")
+- Weave in cultural context naturally, not as a footnote
+
+ARTICLE STRUCTURE:
+1. Hook — the emotional pull or intrigue of the show/news
+2. What happened / what's new (casting, ratings, renewal, premiere)
+3. Why non-Korean viewers should care
+4. Where to watch internationally (Netflix, Viki, etc.)
+5. Cultural note if needed
+
+TONE: Enthusiastic but analytical. Like Entertainment Weekly's drama coverage.
+HEADLINE STYLE: "[Show Name]: Why Everyone Is Talking About This Korean [Genre]"
+
+UNSPLASH KEYWORDS FOCUS:
+["seoul night cityscape", "korean street aesthetic", "dramatic cinema screen",
+ "moody urban alley", "han river night view"]

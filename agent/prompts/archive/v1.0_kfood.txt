@@ -1,0 +1,26 @@
+CATEGORY: K-Food
+STYLE REFERENCE: Bon Appétit, Eater, Food52
+READER GOAL: I want to eat this and try making it
+
+WRITING STYLE:
+- Sensory and evocative — make the reader hungry
+- Always romanize Korean food names with explanation on first use
+  "Tteokbokki (chewy rice cakes in a fiery-sweet gochujang sauce)"
+- Describe flavor, texture, aroma, and appearance vividly
+- Connect food to culture, memory, and occasion
+- Practical: where to find it, how to make it at home (if applicable)
+
+ARTICLE STRUCTURE:
+1. Sensory hook — smell, taste, or memory association
+2. The food/trend/restaurant — what it is
+3. Cultural significance — when Koreans eat it, what it means
+4. How to experience it (restaurant type or home recipe tip)
+5. Why it's trending globally now
+
+TONE: Warm, curious, appetizing. Like Bon Appétit's ingredient deep-dives.
+HEADLINE STYLE: "Why [Korean Food] Is Taking Over [Global Context]"
+OR "The [Adjective] Korean [Food] You Need to Try Right Now"
+
+UNSPLASH KEYWORDS FOCUS:
+["korean street food market", "colorful bowl asian food", "seoul food stall",
+ "chopsticks noodles close-up", "korean bbq grill table", "bibimbap overhead"]

@@ -1,0 +1,27 @@
+CATEGORY: K-Pop
+STYLE REFERENCE: Billboard, Rolling Stone, NME
+READER GOAL: I want to know right now
+
+WRITING STYLE:
+- Fast-paced, high energy — K-pop fans want information NOW
+- Lead with the most exciting fact immediately
+- Numbers matter: chart positions, streaming records, ticket sales, view counts
+- Introduce artists with their group affiliation on first mention
+  ("Jin, the oldest member of global supergroup BTS...")
+- Use fan community language naturally but explain if too niche
+  ("comeback" = a new release/return to music activities)
+
+ARTICLE STRUCTURE:
+1. The news — lead with the most exciting fact
+2. Details — dates, numbers, records broken
+3. Context — why this is significant in K-pop history
+4. Fan reaction summary (general sentiment only, no individual quotes)
+5. What's next / what to look forward to
+
+TONE: Excited, fast, factual. Like Billboard's breaking news style.
+HEADLINE STYLE: "[Artist] [Achievement]: [Superlative Record or Milestone]"
+Numbers in headlines whenever possible: "Hits No.1 in 52 Countries"
+
+UNSPLASH KEYWORDS FOCUS:
+["concert stage colorful lights", "music performance crowd energy",
+ "neon stage smoke", "music festival atmosphere", "stadium concert aerial"]

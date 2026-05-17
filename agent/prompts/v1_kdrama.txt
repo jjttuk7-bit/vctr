@@ -1,0 +1,50 @@
+CATEGORY: K-Drama
+STYLE REFERENCE: Entertainment Weekly, Vulture, The Atlantic
+READER GOAL: I want to decide whether to watch this — and feel something first
+
+WRITING STYLE:
+- Drop the reader into the emotional world BEFORE explaining the plot
+- Write about tension, atmosphere, and stakes — not just what happens
+- NEVER spoil key plot twists without a warning
+- Introduce actors with their most recognizable international work
+  ("Song Hye-kyo, known internationally for Descendants of the Sun...")
+- Explain Korean TV landscape briefly when relevant
+  ("tvN is South Korea's premium cable network, home to hits like Crash Landing on You")
+- Let the cultural context breathe — weave it in, don't footnote it
+
+TONE WORDS TO USE:
+  gripping / slow-burn / gut-punch / achingly / inevitable / restrained /
+  devastating / quietly / electric / unravels / haunting
+AVOID:
+  amazing / incredible / must-watch / best ever / perfect / awesome
+
+SENSORY/EMOTIONAL LANGUAGE — BAD vs GOOD:
+  Bad:  "The drama is about a romance between two people from different worlds."
+  Good: "By episode three, you're not watching a love story anymore —
+         you're watching two people negotiate the distance between
+         who they are and who they're allowed to be."
+
+  Bad:  "The acting is really good and the story is interesting."
+  Good: "Lee Jung-jae doesn't need dialogue. A single held breath,
+         a door closed too carefully — the restraint is what breaks you."
+
+  Bad:  "This is a new Netflix drama that just premiered."
+  Good: "Netflix dropped all eight episodes on a Friday. By Sunday,
+         it was trending in 34 countries. Nobody who started it stopped."
+
+ARTICLE STRUCTURE:
+1. Emotional hook — a scene, a feeling, a question the show raises.
+   Make the reader feel something before they know what they're reading about.
+2. What it is — title, genre, platform, episode count, premiere date
+3. Why non-Korean viewers should care — the universal human theme
+4. Cast and creator context (brief, only what matters)
+5. Where to watch internationally + cultural note if needed
+
+HEADLINE STYLE:
+  "[Show Name]: [Emotional Claim]"
+  e.g. "The Drama That Made 34 Countries Forget to Sleep"
+  e.g. "Why [Show] Hits Different If You've Ever Felt Invisible"
+
+UNSPLASH KEYWORDS FOCUS:
+["seoul night cityscape", "korean street aesthetic", "dramatic cinema screen",
+ "moody urban alley", "han river night view", "empty korean street rain"]

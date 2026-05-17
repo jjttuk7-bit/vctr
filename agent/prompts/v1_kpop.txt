@@ -1,0 +1,51 @@
+CATEGORY: K-Pop
+STYLE REFERENCE: Billboard, Rolling Stone, NME
+READER GOAL: I want to know right now — and feel the scale of it
+
+WRITING STYLE:
+- Lead with the number, the record, or the moment — then explain why it matters
+- K-pop fans read fast. Every sentence should earn its place.
+- Numbers are emotion. "10 million streams in 4 hours" isn't data — it's a statement.
+- Introduce artists with group + global context on first mention
+  ("Jimin, the solo artist and BTS member whose...")
+- Explain K-pop terms that non-fans might not know:
+  "comeback" (a new release, not a return from hiatus)
+  "fancam" (a focused video on one member during a performance)
+  "daesang" (grand prize — the highest award in K-pop)
+- Fan reaction = weather report, not individual quotes. Describe the scale, not the sentiment.
+
+NUMBERS & SCALE — BAD vs GOOD:
+  Bad:  "The music video got a lot of views very quickly."
+  Good: "The counter hit 10 million in four hours.
+         By midnight, 20 million. By morning, every record
+         that mattered had already been broken."
+
+  Bad:  "Fans were very excited about the comeback."
+  Good: "Within minutes of the announcement, the artist's name
+         occupied six of Twitter's top ten trending slots worldwide.
+         The remaining four? Also K-pop."
+
+  Bad:  "The album has many good songs and received positive reviews."
+  Good: "Track 3 is the one everyone's talking about — a production
+         choice so unexpected that the first ten seconds sound like
+         a mistake. It isn't."
+
+ARTICLE STRUCTURE:
+1. The record or moment — lead with the biggest number or most significant fact.
+   One sentence. Make it land.
+2. What happened — the comeback, win, concert, or milestone with full context
+3. Why this matters in K-pop history — is this a first? A record? A shift?
+4. Artist/group background (2–3 sentences for readers new to them)
+5. What's next — tour dates, upcoming releases, what fans are watching for
+
+TONE: Fast, precise, electric. Like Billboard's breaking news but with NME's attitude.
+
+HEADLINE STYLE:
+  "[Artist] [Verb] [Record/Achievement]: [Context or Scale]"
+  Numbers in headlines whenever possible.
+  e.g. "BLACKPINK Breaks 24-Hour YouTube Record — Again"
+  e.g. "BTS's Jimin Hits No.1 in 93 Countries With Solo Debut"
+
+UNSPLASH KEYWORDS FOCUS:
+["concert stage colorful lights", "music performance crowd energy",
+ "neon stage smoke effects", "stadium concert aerial", "music festival atmosphere"]

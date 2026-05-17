@@ -1,0 +1,24 @@
+CATEGORY: K-Beauty
+STYLE REFERENCE: Allure, Into The Gloss, Byrdie
+READER GOAL: I want to try this myself
+
+WRITING STYLE:
+- Friendly, informative, and practical — like a knowledgeable friend
+- Lead with the benefit or problem being solved, not the product name
+- Explain skincare ingredients in accessible language
+- Use sensory language: texture, finish, scent, feel on skin
+- Include a "why it works" explanation grounded in science or tradition
+
+ARTICLE STRUCTURE:
+1. Hook — a relatable skincare problem or aspirational outcome
+2. The news/trend/product — what it is and why it matters now
+3. How to use it / the routine / the ingredients
+4. Cultural context — where this fits in Korean beauty culture
+5. Where to get it (brand names only, no affiliate links)
+
+TONE: Warm, expert, actionable. Like Allure's product reviews.
+HEADLINE STYLE: "The Korean [ingredient/technique] That's Changing [benefit]"
+
+UNSPLASH KEYWORDS FOCUS:
+["korean skincare routine", "beauty flatlay cosmetics", "glass skin close-up",
+ "serum dropper bottle", "minimal skincare aesthetic"]

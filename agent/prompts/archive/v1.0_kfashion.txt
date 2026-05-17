@@ -1,0 +1,25 @@
+CATEGORY: K-Fashion
+STYLE REFERENCE: Vogue, Hypebeast, i-D
+READER GOAL: I want to apply this trend to my own style
+
+WRITING STYLE:
+- Cool, confident, and aspirational — don't over-explain
+- Use fashion vocabulary naturally (silhouette, colorway, capsule)
+- Reference global context: "Seoul street style has long influenced..."
+- Name brands specifically — readers want to shop
+- Avoid being too niche: explain Korean brand names briefly
+
+ARTICLE STRUCTURE:
+1. Visual hook — describe the look or trend in striking terms
+2. The trend/brand/collection — what's happening
+3. Where it fits in global fashion context
+4. How to wear it / how to incorporate it
+5. Where to buy (brand names only, no affiliate links)
+
+TONE: Effortlessly cool. Like Hypebeast meets Vogue Korea.
+HEADLINE STYLE: "The Korean [Item/Trend] That's Quietly Taking Over [City/Context]"
+
+UNSPLASH KEYWORDS FOCUS:
+["minimal street style fashion", "clean aesthetic outfit flatlay",
+ "seoul street fashion", "fashion editorial clean background",
+ "monochrome outfit detail"]

@@ -1,0 +1,42 @@
+CATEGORY: K-Food
+STYLE REFERENCE: Bon Appétit, Eater, Food52
+READER GOAL: I want to eat this and try making it
+
+WRITING STYLE:
+- Sensory and evocative — make the reader hungry BEFORE they know what it is
+- Lead with what it feels like to eat it: texture, temperature, the first bite
+- Always romanize Korean food names with explanation on first use
+  "Tteokbokki (chewy rice cakes in a fiery-sweet gochujang sauce)"
+- Describe flavor, texture, aroma, and appearance with specific words
+  Use: silky / chewy / crackling / umami-rich / smoky / bright / fermented
+  Avoid: delicious / tasty / good / nice / yummy
+- Connect food to culture, memory, and occasion
+- Practical: where to find it, how to make it at home (if applicable)
+
+SENSORY LANGUAGE — BAD vs GOOD:
+  Bad:  "Jumeokbap is a rice ball with various fillings."
+  Good: "Bite through the lightly toasted sesame crust and you hit a warm,
+         yielding center — tuna mayo, kimchi, or spicy pork, depending on
+         who made it and what they had in the fridge."
+
+  Bad:  "Doenjang jjigae is a Korean fermented soybean paste soup."
+  Good: "The first spoonful hits with that deep, funky warmth only months
+         of fermentation can produce — earthy, slightly bitter, then rounded
+         out by soft tofu and whatever vegetables are in season."
+
+ARTICLE STRUCTURE:
+1. Sensory hook — the first bite, smell, or memory. Drop the reader into
+   the experience before naming the dish.
+2. The food/trend/restaurant — what it is, where it comes from
+3. Cultural significance — when Koreans eat it, what it means, any history
+4. How to experience it (restaurant type, Korean market tip, or home recipe)
+5. Why it's trending globally right now
+
+TONE: Warm, curious, appetizing. Like Bon Appétit's ingredient deep-dives.
+HEADLINE STYLE: "Why [Korean Food] Is Taking Over [Global Context]"
+OR "The [Adjective] Korean [Food] You Need to Try Right Now"
+OR start with a sensory verb: "Bite Into This..." / "The Dish That..."
+
+UNSPLASH KEYWORDS FOCUS:
+["korean street food market", "colorful bowl asian food", "seoul food stall",
+ "chopsticks noodles close-up", "korean bbq grill table", "bibimbap overhead"]

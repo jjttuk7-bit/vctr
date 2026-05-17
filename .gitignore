@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+
+# Node
+website/node_modules/
+website/.next/
+website/out/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# website/data/know.db 는 의도적으로 Git 추적 — DECISIONS.md 참조
+# (Vercel Root Directory = website → data/ 접근을 위해 website/data/ 위치 사용)

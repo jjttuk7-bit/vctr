@@ -1,0 +1,35 @@
+/* 참조: BRANDING.md 3절 CSS 변수 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --know-red:        #C0392B;
+  --know-red-light:  #E8534A;
+  --know-red-dark:   #922B21;
+  --know-navy:       #1A1A2E;
+  --know-navy-light: #2C2C4A;
+  --know-off-white:  #FAF9F6;
+  --know-gold:       #E8B86D;
+
+  --know-bg:         var(--know-off-white);
+  --know-text:       var(--know-navy);
+  --know-accent:     var(--know-red);
+}
+
+body {
+  background-color: var(--know-bg);
+  color:            var(--know-text);
+}
+
+/* 스크롤바 숨기기 (카테고리 네비) */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* 기사 본문 타이포그래피 */
+.article-body p {
+  margin-bottom: 1.5rem;
+  line-height:   1.8;
+  font-size:     1.0625rem;
+  color:         #2C2C2C;
+}
