@@ -96,7 +96,7 @@ export default function ArticlePage({ params }: Props) {
 
       {/* ── 히어로 이미지 ────────────────────────────────── */}
       <div
-        className="relative w-full aspect-[16/9] rounded-xl overflow-hidden mb-10"
+        className="relative w-full aspect-[4/3] sm:aspect-[16/9] rounded-xl overflow-hidden mb-10"
         style={{ background: bg }}
       >
         {article.image_url && article.image_source !== 'og_generated' ? (
@@ -107,7 +107,8 @@ export default function ArticlePage({ params }: Props) {
               fill
               priority
               className="object-cover"
-              sizes="(max-width:768px) 100vw, 672px"
+              sizes="(max-width:640px) 100vw, 672px"
+              unoptimized
             />
             {article.image_source === 'unsplash' && article.image_credit && (
               <p className="absolute bottom-2 right-3 text-white/50 text-[10px]">

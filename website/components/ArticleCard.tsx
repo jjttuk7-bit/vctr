@@ -1,7 +1,7 @@
 // Vctr — 툴 리뷰 카드
-// layout="grid"  : 이미지 위 + 텍스트 아래 (카테고리 페이지)
-// layout="list"  : 썸네일 좌 + 텍스트 우  (홈 리스트뷰)
-// layout="hero"  : 2컬 대형 카드           (홈 상단)
+// layout="grid" : 이미지 위 + 텍스트 아래
+// layout="list" : 썸네일 좌 + 텍스트 우 (홈 리스트뷰)
+// layout="hero" : 대형 카드 (홈 상단)
 import Image from 'next/image'
 import Link from 'next/link'
 import CategoryBadge from './CategoryBadge'
@@ -9,8 +9,8 @@ import { getCatColor, formatDateShort, readTime } from '@/lib/config'
 import type { ArticleRow } from '@/lib/db'
 
 interface Props {
-  article:  ArticleRow
-  layout?:  'grid' | 'list' | 'hero'
+  article: ArticleRow
+  layout?: 'grid' | 'list' | 'hero'
 }
 
 const SOURCE_LABEL: Record<string, string> = {
@@ -31,27 +31,26 @@ export default function ArticleCard({ article, layout = 'grid' }: Props) {
     return (
       <Link
         href={href}
-        className="group flex items-start gap-4 px-4 py-3.5 rounded-xl
-          hover:bg-white hover:shadow-sm transition-all duration-200
-          border border-transparent hover:border-slate-200"
+        className="group flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors"
       >
-        {/* 썸네일 */}
+        {/* 썸네일 — fill 대신 width/height 직접 지정 (모바일 안정) */}
         <div
-          className="relative flex-shrink-0 w-[88px] h-[66px] rounded-lg overflow-hidden"
-          style={{ background: bg }}
+          className="relative flex-shrink-0 rounded-lg overflow-hidden"
+          style={{ width: 80, height: 60, background: bg }}
         >
           {hasImage ? (
             <Image
               src={article.image_url!}
-              alt={article.headline_en}
-              fill
-              className="object-cover group-hover:scale-[1.04] transition-transform duration-400"
-              sizes="88px"
+              alt=""
+              width={80}
+              height={60}
+              className="object-cover w-full h-full"
+              unoptimized
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-white/20 text-xl font-black select-none">
-                {article.category.split(' ')[0]}
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-white/25 text-lg font-black select-none">
+                {article.category.split(' ')[0][0]}
               </span>
             </div>
           )}
@@ -59,7 +58,7 @@ export default function ArticleCard({ article, layout = 'grid' }: Props) {
 
         {/* 텍스트 */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5 mb-1">
+          <div className="flex items-center gap-1.5 mb-0.5">
             <CategoryBadge category={article.category} size="sm" />
             {src && (
               <span className="text-[9px] font-bold tracking-wider text-slate-400
@@ -68,20 +67,20 @@ export default function ArticleCard({ article, layout = 'grid' }: Props) {
               </span>
             )}
           </div>
-          <h3 className="text-[0.875rem] font-semibold text-vctr-black leading-snug line-clamp-2
+          <h3 className="text-sm font-semibold text-vctr-black leading-snug line-clamp-2
             group-hover:text-vctr-indigo transition-colors">
             {article.headline_en}
           </h3>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-0.5 text-xs text-slate-400">
             {formatDateShort(article.published_at_ko)}
-            {' · '}{readTime(article.body_en ?? article.seo_description)} min read
+            {' · '}{readTime(article.body_en ?? article.seo_description)} min
           </p>
         </div>
       </Link>
     )
   }
 
-  // ── 대형 히어로 카드 (홈 상단 2개) ───────────────────────
+  // ── 대형 히어로 카드 ──────────────────────────────────────
   if (layout === 'hero') {
     return (
       <Link
@@ -91,7 +90,7 @@ export default function ArticleCard({ article, layout = 'grid' }: Props) {
       >
         {/* 이미지 */}
         <div
-          className="relative aspect-[16/8] overflow-hidden"
+          className="relative aspect-[16/9] overflow-hidden"
           style={{ background: bg }}
         >
           {hasImage ? (
@@ -100,7 +99,8 @@ export default function ArticleCard({ article, layout = 'grid' }: Props) {
               alt={article.headline_en}
               fill
               className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-              sizes="(max-width:768px) 100vw, 50vw"
+              sizes="(max-width:640px) 100vw, 50vw"
+              unoptimized
             />
           ) : (
             <div className="absolute inset-0 flex items-end p-5">
@@ -109,7 +109,6 @@ export default function ArticleCard({ article, layout = 'grid' }: Props) {
               </span>
             </div>
           )}
-          {/* 소스 배지 (이미지 위 우상단) */}
           {src && (
             <span className="absolute top-3 right-3 text-[9px] font-bold px-2 py-1
               bg-black/50 text-white rounded-full tracking-widest backdrop-blur-sm">
@@ -119,19 +118,19 @@ export default function ArticleCard({ article, layout = 'grid' }: Props) {
         </div>
 
         {/* 텍스트 */}
-        <div className="p-5 flex flex-col flex-1">
-          <div className="flex items-center gap-2 mb-2.5">
+        <div className="p-4 flex flex-col flex-1">
+          <div className="flex items-center gap-2 mb-2">
             <CategoryBadge category={article.category} size="sm" />
             <span className="text-xs text-slate-400 ml-auto">
               {formatDateShort(article.published_at_ko)}
             </span>
           </div>
-          <h2 className="text-[1.0625rem] font-bold text-vctr-black leading-snug
+          <h2 className="text-[0.9375rem] font-bold text-vctr-black leading-snug
             group-hover:text-vctr-indigo transition-colors line-clamp-2">
             {article.headline_en}
           </h2>
           {article.seo_description && (
-            <p className="mt-2 text-sm text-slate-500 line-clamp-2 flex-1">
+            <p className="mt-1.5 text-sm text-slate-500 line-clamp-2 flex-1">
               {article.seo_description}
             </p>
           )}
@@ -143,7 +142,7 @@ export default function ArticleCard({ article, layout = 'grid' }: Props) {
     )
   }
 
-  // ── 기본 그리드 카드 ─────────────────────────────────────
+  // ── 기본 그리드 카드 ──────────────────────────────────────
   return (
     <Link
       href={href}
@@ -160,7 +159,8 @@ export default function ArticleCard({ article, layout = 'grid' }: Props) {
             alt={article.headline_en}
             fill
             className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-            sizes="(max-width:768px) 100vw, 33vw"
+            sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+            unoptimized
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">

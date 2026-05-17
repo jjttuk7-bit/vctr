@@ -17,6 +17,7 @@
 body {
   background-color: var(--vctr-surface);
   color:            var(--vctr-black);
+  overflow-x:       hidden;
 }
 
 /* ── Scrollbar hide (category nav) ──────────────────── */

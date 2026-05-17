@@ -50,7 +50,7 @@ export default function HomePage() {
               hover:shadow-xl transition-shadow duration-300"
           >
             <div
-              className="relative aspect-[21/9] overflow-hidden"
+              className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden"
               style={{ background: getCatColor(featured.category).bg }}
             >
               {featured.image_url && featured.image_source !== 'og_generated' && (
@@ -60,6 +60,7 @@ export default function HomePage() {
                   fill priority
                   className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
                   sizes="100vw"
+                  unoptimized
                 />
               )}
               {/* 그라디언트 */}
@@ -130,7 +131,7 @@ export default function HomePage() {
 
           {/* 나머지 — 가로형 리스트 */}
           {listCards.length > 0 && (
-            <div className="rounded-xl border border-slate-200 bg-white overflow-hidden divide-y divide-slate-100">
+            <div className="rounded-xl border border-slate-200 bg-white divide-y divide-slate-100">
               {listCards.map(a => (
                 <ArticleCard key={a.id} article={a} layout="list" />
               ))}
